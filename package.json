@@ -1,7 +1,11 @@
 {
   "name": "lobi-app-web",
   "version": "0.1.0",
+  "description": "TFG front-end",
+  "repository": "git@github.com:carlosp1604/lobi-app-web.git",
+  "author": "Carlos Ponton",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,7 +15,7 @@
   "dependencies": {
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.5.2"
+    "next": "16.2.6"
   },
   "devDependencies": {
     "typescript": "^5",
