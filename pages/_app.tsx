@@ -1,13 +1,11 @@
 import "~/styles/globals.css";
+import AppLayout from "~/components/layout/AppLayout";
 import type { AppProps } from "next/app";
-import AppNavbar from "~/components/Navbar/AppNavbar";
-import AppFooter from "~/components/Footer/AppFooter";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div>
-      <AppNavbar/>
+    <AppLayout>
       <Component {...pageProps} />
-      <AppFooter/>
-    </div>);
+    </AppLayout>
+  );
 }
