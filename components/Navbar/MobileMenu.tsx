@@ -4,6 +4,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { Menu } from "lucide-react";
 import { Button } from '~/components/ui/button';
 import {useRouter} from "next/router";
+import {isActivePath} from "~/helpers/path.helper";
 import { AppNavbarLink } from "~/components/Navbar/AppNavbar";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '~/components/ui/sheet';
 
@@ -14,7 +15,7 @@ interface NavMobileMenuProps {
 }
 
 export default function MobileMenu({ isOpen, setIsOpen, navLinks }: NavMobileMenuProps) {
-  const { t } = useTranslation('nav_bar');
+  const { t } = useTranslation('navigation');
   const { pathname } = useRouter();
 
   return (
@@ -33,9 +34,9 @@ export default function MobileMenu({ isOpen, setIsOpen, navLinks }: NavMobileMen
 
         <SheetContent
           side="left"
-          className="border-r border-t-0 p-4 shadow-xl transition-all"
+          className="border-r border-t-0 py-4 px-2"
         >
-          <SheetTitle className="text-left px-2 pt-1 font-semibold uppercase text-muted-foreground/70 tracking-wider mb-4">
+          <SheetTitle className="text-left px-2 pt-1 font-semibold uppercase text-muted-foreground/70 mb-4">
             {t('nav_bar_menu_title')}
           </SheetTitle>
           <SheetDescription className="sr-only">
@@ -46,7 +47,7 @@ export default function MobileMenu({ isOpen, setIsOpen, navLinks }: NavMobileMen
             {navLinks.map((link) => {
               const Icon = link.icon;
 
-              const isActive = pathname === link.href || pathname === link.href.replace(/\/$/, '');
+              const isActive = isActivePath(link.href, pathname);
 
               return (
                 <Link

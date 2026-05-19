@@ -12,7 +12,7 @@ const i18nConfig = {
   pages: {
     '*': [
       'common',
-      'nav_bar'
+      'navigation'
     ],
   },
 
