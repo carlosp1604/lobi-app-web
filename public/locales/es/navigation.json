@@ -1,0 +1,30 @@
+{
+  "footer_app_copyright_title": "LobiApp, {{currentYear}} ©",
+  "footer_app_logo_text": "LobiApp",
+  "footer_home_link_aria_title": "Ir a la página de inicio",
+
+  "nav_bar_app_logo_text": "LobiApp",
+  "nav_bar_home_link_aria": "Ir a la página de inicio",
+  "nav_bar_main_nav_aria": "Navegación principal",
+  "nav_bar_search_button_aria": "Buscar actividades",
+  "nav_bar_mobile_menu_aria": "Abrir menú de secciones",
+
+  "nav_bar_link_activities_title": "Actividades",
+  "nav_bar_link_search_activities_title": "Buscar actividades",
+  "nav_bar_link_create_activity_title": "Crear actividad",
+  "nav_bar_link_faq_title": "FAQ",
+  "nav_bar_link_roadmap_title": "Roadmap",
+
+  "nav_bar_auth_loading_aria": "Cargando estado de la sesión",
+  "nav_bar_user_menu_aria": "Abrir menú de usuario",
+  "nav_bar_avatar_alt": "Avatar del usuario",
+
+  "nav_bar_auth_menu_aria": "Abrir opciones de acceso",
+  "nav_bar_auth_login_button": "Iniciar sesión",
+  "nav_bar_auth_register_button": "Registrarse",
+
+  "nav_bar_profile_dropdown_user_info": "Usuario conectado:",
+  "nav_bar_profile_dropdown_username_prefix": "Nombre de usuario:",
+  "nav_bar_profile_dropdown_profile": "Mi Perfil",
+  "nav_bar_profile_dropdown_logout": "Cerrar sesión"
+}
