@@ -8,7 +8,7 @@ import {useAuth} from "~/hooks/useAuth";
 import LoginForm from "~/components/Forms/LoginForm";
 import {Result} from "~/types/Result";
 import {useEffect} from "react";
-import {getSanitizedCallbackUrlForLogin} from "~/helpers/callbackUrlSanitizer.helper";
+import {getSanitizedCallbackUrlForLogin} from "~/helpers/callbackUrlSanitizer.helper"
 
 export default function Login() {
   const { t } = useTranslation('auth');
