@@ -8,14 +8,18 @@ const i18nConfig = {
           .catch((exception) => reject((exception)))
     })
   },
-  logBuild: false,
+  logBuild: true,
   pages: {
     '*': [
       'common',
-      'navigation'
+      'navigation',
+      'api-errors',
+      'next-errors'
     ],
+    'rgx:^/auth': [
+      'auth',
+    ]
   },
-
 }
 
 module.exports = i18nConfig

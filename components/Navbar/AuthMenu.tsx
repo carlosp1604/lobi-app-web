@@ -1,7 +1,8 @@
+'use client'
+
 import React from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { Button } from '~/components/ui/button';
-import { useAuth } from '~/hooks/useAuth';
 import {User, LogOut, Loader2, CircleUserRound, LogIn, UserPlus} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import {
@@ -13,11 +14,12 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { useRouter } from 'next/router';
-import {isActivePath} from "~/helpers/path.helper";
+import { isActivePath } from "~/helpers/path.helper";
+import {useAuth} from "~/hooks/useAuth";
 
 export default function AuthMenu() {
   const { t } = useTranslation('navigation');
-  const { status, user, login, logout } = useAuth();
+  const { status, user, logout } = useAuth();
   const router = useRouter();
   const { pathname } = useRouter();
 
@@ -46,10 +48,10 @@ export default function AuthMenu() {
             aria-label={t('nav_bar_user_menu_aria')}
           >
             <Avatar className="h-9 w-9 hover:scale-[1.05] ">
-              <AvatarImage src={user.avatarUrl || undefined} alt={t('nav_bar_avatar_alt')} />
+              <AvatarImage src={user.imageUrl || undefined} alt={t('nav_bar_avatar_alt')} />
               <AvatarFallback delayMs={600} aria-hidden="true">
                 {/** TODO: Extract to helper **/}
-                {user.userName.charAt(0).toUpperCase()}
+                {user.name.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </Button>
@@ -58,11 +60,11 @@ export default function AuthMenu() {
         <DropdownMenuContent className="w-56" align="end" forceMount sideOffset={8}>
           <DropdownMenuLabel
             className="font-normal"
-            aria-label={t('nav_bar_profile_dropdown_user_info', { userName: user.userName})}
+            aria-label={t('nav_bar_profile_dropdown_user_info', { userName: user.name})}
           >
             <div className="flex flex-col space-y-1">
               <p className="font-semibold leading-none text-foreground">
-                {user.userName}
+                {user.name}
               </p>
               <p
                 className="leading-none text-muted-foreground"
@@ -85,7 +87,7 @@ export default function AuthMenu() {
 
           <DropdownMenuItem
             className="group cursor-pointer text-destructive focus:bg-destructive/10"
-            onClick={logout}
+            onClick={async () => {await logout()}}
           >
             <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
             {t('nav_bar_profile_dropdown_logout')}
@@ -109,17 +111,23 @@ export default function AuthMenu() {
       <DropdownMenuContent align="end" className="w-48 mt-1">
         <DropdownMenuItem
           className="cursor-pointer font-medium"
-          onClick={login}
+          onClick={() => {
+            const isCurrentPath = isActivePath('/auth/login', pathname)
+
+            if (isCurrentPath) {
+              return
+            }
+            router.push(`/auth/login/?callbackUrl=${encodeURIComponent(router.asPath)}`)}}
         >
           <LogIn className="mr-2 h-4 w-4 opacity-70" aria-hidden="true" />
           {t('nav_bar_auth_login_button')}
         </DropdownMenuItem>
         <DropdownMenuItem
           className="cursor-pointer font-medium"
-          onClick={() => router.push('/auth/register/')}
+          onClick={() => router.push('/auth/signup/')}
         >
           <UserPlus className="mr-2 h-4 w-4 opacity-70" aria-hidden="true" />
-          {t('nav_bar_auth_register_button')}
+          {t('nav_bar_auth_signup_button')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

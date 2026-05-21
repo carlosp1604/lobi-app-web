@@ -1,10 +1,11 @@
+'use client'
+
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import {Search, ChevronDown, Activity, Plus, HelpCircle, Milestone, Menu, CircleEllipsis} from 'lucide-react';
 import { Button } from '~/components/ui/button';
-import AuthMenu from '~/components/Navbar/AuthMenu';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -24,6 +25,8 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import {isActivePath} from "~/helpers/path.helper";
+import AuthMenu from "~/components/Navbar/AuthMenu";
+
 
 export default function AppNavbar() {
   const { t } = useTranslation('navigation');
@@ -177,7 +180,6 @@ export default function AppNavbar() {
 
           <AuthMenu/>
         </div>
-
       </div>
     </header>
   );
