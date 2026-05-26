@@ -1,0 +1,35 @@
+{
+  "user_profile_my_profile_badge_title": "Mi perfil",
+  "user_profile_activities_tab_title": "Actividades",
+  "user_profile_profile_setting_tab_title": "Perfil",
+  "user_profile_security_tab_title": "Seguridad",
+  "user_profile_app_settings_tab_title": "Ajustes",
+
+  "user_security_active_sessions_active_since_title": "Hace {{time}}",
+  "user_security_active_sessions_close_session_button_title": "Cerrar",
+  "user_security_active_sessions_empty_state_description": "No se encontró ninguna sesión activa para este usuario",
+  "user_security_active_sessions_empty_state_title": "No hay sesiones activas",
+  "user_security_active_sessions_current_session_active_now_title": "Activa ahora",
+  "user_security_active_sessions_current_session_badge_title": "Actual",
+  "user_security_active_sessions_relative_date_days_title": "{{quantity}} días",
+  "user_security_active_sessions_relative_date_hours_title": "{{quantity}} horas",
+  "user_security_active_sessions_relative_date_minutes_title": "{{quantity}} minutos",
+  "user_security_active_sessions_relative_date_months_title": "{{quantity}} meses",
+  "user_security_active_sessions_relative_date_weeks_title": "{{quantity}} semanas",
+  "user_security_active_sessions_relative_date_years_title": "{{quantity}} años",
+  "user_security_active_sessions_session_closed_title": "Sesión cerrada correctamente",
+  "user_security_active_sessions_title": "Sesiones Activas",
+  "user_security_active_sessions_unknown_device_title": "Dispositivo desconocido",
+  "user_security_active_sessions_unknown_location_title": "Ubicación desconocida",
+
+  "user_security_loading_title": "Cargando preferencias",
+
+  "user_security_security_settings_title": "Configuración de Seguridad",
+  "user_security_security_settings_password_title": "Contraseña",
+  "user_security_security_settings_password_last_modified_title": "Cambiada hace {{time}}",
+  "user_security_security_settings_password_never_modified_title": "Nunca cambiada",
+  "user_security_security_settings_change_password_button_title": "Cambiar",
+
+  "user_profile_inactive_tab_description": "Esta función aún no está disponible",
+  "user_profile_inactive_tab_title": "Trabajando..."
+}

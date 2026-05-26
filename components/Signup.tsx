@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {VerifyEmailForm} from "~/components/Forms/VerifyEmailForm";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "~/components/ui/card";
 import {ValidateTokenForm} from "~/components/Forms/ValidateTokenForm";
@@ -11,8 +11,11 @@ import {
   AUTH_CREATE_USER_TOKEN_ALREADY_EXPIRED,
   AUTH_CREATE_USER_TOKEN_ALREADY_USED,
 } from "~/types/auth/ApiCodes";
-import {ServiceError, ServiceErrorLegacy} from "~/types/ServiceError";
 import SignupForm from "~/components/Forms/SignupForm";
+import {AppServiceError} from "~/types/ServiceError";
+import {useAuth} from "~/hooks/useAuth";
+import {useRouter} from "next/router";
+import Link from "next/link";
 
 type SignupStep = 'verify-email' | 'validate-token' | 'signup' | 'confirm'
 
@@ -53,7 +56,16 @@ export function Signup() {
   const [email, setEmail] = useState<string>('')
   const [verificationToken, setVerificationToken] = useState<string>('')
 
-  const onSendEmailComplete = (result: Result<string, ServiceError>): void => {
+  const { status, setLoginOpen } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.replace('/');
+    }
+  }, [status, router]);
+
+  const onSendEmailComplete = (result: Result<string, AppServiceError>): void => {
     if (result.success) {
       setEmail(result.value);
       setStep('validate-token');
@@ -65,7 +77,7 @@ export function Signup() {
     setStep('validate-token')
   }
 
-  const onTokenValidationComplete = (result: Result<string, ServiceError>): void => {
+  const onTokenValidationComplete = (result: Result<string, AppServiceError>): void => {
     if (result.success) {
       setVerificationToken(result.value)
       setStep('signup')
@@ -90,7 +102,7 @@ export function Signup() {
     */
   }
 
-  const onSignupComplete = (result: Result<void, ServiceErrorLegacy>): void => {
+  const onSignupComplete = (result: Result<void, AppServiceError>): void => {
     if (result.success) {
       setEmail('')
       setVerificationToken('')
@@ -106,7 +118,7 @@ export function Signup() {
       AUTH_CREATE_USER_INVALID_TOKEN,
     ];
 
-    if ('apiCode' in error && fatalTokenErrors.includes(error.apiCode)) {
+    if (error.isApiErrorType(fatalTokenErrors)) {
       setEmail('');
       setVerificationToken('');
       setStep('verify-email');
@@ -120,7 +132,7 @@ export function Signup() {
       <VerifyEmailForm
         mode="signup"
         loading={loading}
-        onLoadingChange={(loading) => setLoading(loading)}
+        onLoadingChange={setLoading}
         onActionComplete={onSendEmailComplete}
         onAlreadyHasCode={onAlreadyHasCode}
       />
@@ -167,20 +179,14 @@ export function Signup() {
                 {t('signup_confirm_step_description')}
               </CardDescription>
             </CardHeader>
-
             <CardContent className="flex flex-col gap-2 pt-2">
-              <Button
-                className="w-full cursor-pointer"
-                onClick={() => window.location.href = '/auth/login'}
-              >
-                {t('signup_confirm_step_login_button_title')}
+              <Button className="w-full cursor-pointer" onClick={() => setLoginOpen(true)}>
+                { t('signup_confirm_step_login_button_title') }
               </Button>
-              <Button
-                variant="outline"
-                className="w-full cursor-pointer"
-                onClick={() => window.location.href = '/'}
-              >
-                {t('signup_confirm_step_home_button_title')}
+              <Button variant="outline" className="w-full cursor-pointer" asChild>
+                <Link href="/">
+                  {t('signup_confirm_step_home_button_title')}
+                </Link>
               </Button>
             </CardContent>
           </Card>
@@ -200,7 +206,7 @@ export function Signup() {
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-transparent transition-colors cursor-pointer -ml-2" // 🌟 '-ml-2' compensa el padding para que la flecha se alinee al borde izquierdo
+                  className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-transparent transition-colors cursor-pointer -ml-2"
                   onClick={() => {
                     const prev = ResetPasswordStepData[step].previous;
                     if (prev) {

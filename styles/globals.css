@@ -17,9 +17,6 @@
   @variant xl {
     max-width: 1240px;
   }
-  @variant 2xl {
-    max-width: 1496px;
-  }
 }
 
 :root {

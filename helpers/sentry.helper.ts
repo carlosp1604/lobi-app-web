@@ -1,63 +1,112 @@
 import * as Sentry from "@sentry/nextjs";
-import { ApiErrorEnvelope } from "~/helpers/ApiClient";
+import { z } from "zod";
+import { ApiClientErrorEnvelope } from "~/helpers/ApiClient";
 
-interface RequestMetadata {
-  url: string;
-  method: string;
-  body?: unknown;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'unknown-base-url';
+
+const SENSITIVE_FIELDS = new Set([
+  'password',
+  'confirmpassword',
+  'token',
+  'accesstoken',
+  'oldpassword',
+  'newpassword',
+  'authorization',
+  'refresh_token',
+  'refreshtoken'
+]);
+
+function safeSerializeAndSanitize(target: unknown): string | undefined {
+  if (target === undefined || target === null) {
+    return undefined;
+  }
+
+  if (Buffer.isBuffer(target)) {
+    return '[Buffer]';
+  }
+
+  try {
+    return JSON.stringify(target, (key, value: unknown) => {
+      const cleanKey = key.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      if (cleanKey && SENSITIVE_FIELDS.has(cleanKey)) {
+        return '[redacted]';
+      }
+      return value;
+    }, 2);
+  } catch {
+    return '[unserializable or circular reference]';
+  }
 }
 
 export function reportApiErrorToSentry(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  envelope: ApiErrorEnvelope<any>,
-  request: RequestMetadata,
+  envelope: ApiClientErrorEnvelope,
+  requestBody?: Record<string, unknown>,
 ): void {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let sanitizedBody: any = null;
+  const isNetwork = envelope.type === 'network';
 
-  if (request.body && typeof request.body === 'object') {
-    sanitizedBody = JSON.parse(JSON.stringify(request.body));
+  const serializedRequest = safeSerializeAndSanitize(requestBody)
 
-    const sensitiveFields = ['password', 'confirmPassword', 'token', 'accessToken', 'oldPassword', 'newPassword'];
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const sanitize = (obj: any) => {
-      for (const key in obj) {
-        if (sensitiveFields.includes(key)) {
-          obj[key] = '[redacted]';
-        } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-          sanitize(obj[key]);
-        }
-      }
-    };
-    sanitize(sanitizedBody);
+  let rawResponse: unknown = null;
+  if (envelope.type === 'api' || envelope.type === 'validation') {
+    rawResponse = envelope.response;
+  } else if (envelope.type === 'network') {
+    rawResponse = envelope.error;
   }
 
-  const apiCode = envelope.response?.code || 'none';
+  const serializedResponse = safeSerializeAndSanitize(rawResponse)
+
+  let apiCode = 'none';
+  if (
+    !isNetwork &&
+    envelope.response &&
+    typeof envelope.response === 'object' &&
+    'code' in envelope.response
+  ) {
+    apiCode = String((envelope.response as Record<string, unknown>).code);
+  }
+
+  const statusCode = isNetwork ? 0 : envelope.statusCode;
+  const requestId = isNetwork ? 'no-request-id' : envelope.requestId;
+  const fullUrl = `${API_URL}${envelope.path}`;
+
+  const contexts: Record<string, Record<string, unknown>> = {
+    'API Context': {
+      type: envelope.type,
+      method: envelope.method,
+      path: envelope.path,
+      apiBaseUrl: API_URL,
+      fullUrl: fullUrl,
+      statusCode: statusCode,
+      requestId: requestId,
+      info: isNetwork ? envelope.code : ('timestamp' in envelope ? envelope.timestamp : 'no-timestamp'),
+    },
+    'API Data Payload': {
+      requestPayload: serializedRequest,
+      responsePayload: serializedResponse,
+    },
+  };
+
+  if (envelope.type === 'validation' && envelope.error?.issues) {
+    const prettyErrors = z.prettifyError(envelope.error);
+    contexts['Zod Validation Issues'] = {
+      code: envelope.code,
+      errors: prettyErrors
+    };
+  }
 
   Sentry.captureException(
-    new Error(`API Error ${envelope.statusCode} on ${request.method.toUpperCase()} ${envelope.path}`),
+    new Error(`[ApiClient: ${envelope.type.toUpperCase()}] ${envelope.method} ${envelope.path}`),
     {
       tags: {
-        "component": "api-client",
-        "http.status_code": envelope.statusCode.toString(),
-        "http.method": request.method.toUpperCase(),
-        "api.code": apiCode,
-        "api.request_id": envelope.requestId,
+        component: 'api-client',
+        'error.type': envelope.type,
+        'http.status_code': statusCode.toString(),
+        'http.method': envelope.method,
+        'api.code': apiCode,
+        'api.request_id': requestId,
       },
-      contexts: {
-        "API Response": {
-          statusCode: envelope.statusCode,
-          path: envelope.path,
-          timestamp: envelope.timestamp,
-          requestId: envelope.requestId,
-          rawResponse: envelope.response,
-        },
-        "API Request Metadata": {
-          fullUrl: request.url,
-          payload: sanitizedBody,
-        },
-      },
-    }
+      contexts,
+    },
   );
 }

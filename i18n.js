@@ -12,12 +12,13 @@ const i18nConfig = {
   pages: {
     '*': [
       'common',
+      'auth',
       'navigation',
       'api-errors',
       'next-errors'
     ],
-    'rgx:^/auth': [
-      'auth',
+    'rgx:^/user': [
+      'user',
     ]
   },
 }

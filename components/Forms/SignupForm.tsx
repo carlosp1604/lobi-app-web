@@ -10,20 +10,19 @@ import {Loader2} from "lucide-react";
 import {PasswordInputField} from "~/components/Forms/Input/PasswordInput";
 import {PasswordRegex, UserNameRegex, UsernameRegex} from "~/helpers/input.helper";
 import {Result} from "~/types/Result";
-import {ServiceError, ServiceErrorLegacy} from "~/types/ServiceError";
 import {AuthService} from "~/services/auth/AuthService";
-import {AUTH_CREATE_USER_DUPLICATED_USERNAME, AUTH_RESET_PASSWORD_SAME_PASSWORD,} from "~/types/auth/ApiCodes";
 import {toast} from "sonner";
 import {UserNameInput} from "~/components/Forms/Input/UserNameInput";
 import {UserUsernameInput} from "~/components/Forms/Input/UserUsernameInput";
-import {UserRole} from "~/types/UserRole";
+import {UserRole} from "~/types/users/UserRole";
+import {AppServiceError} from "~/types/ServiceError";
 
 interface SignupFormProps {
   email: string;
   verificationToken: string;
   loading: boolean;
   onLoadingChange: (loading: boolean) => void;
-  onActionComplete?: (result: Result<void, ServiceErrorLegacy>) => void;
+  onActionComplete?: (result: Result<void, AppServiceError>) => void;
 }
 
 export default function SignupForm({ email, verificationToken, loading, onLoadingChange, onActionComplete }: SignupFormProps) {
@@ -74,14 +73,10 @@ export default function SignupForm({ email, verificationToken, loading, onLoadin
     if (!result.success) {
       const error = result.error
 
-      if ('key' in error) {
-        toast.error(t(error.key))
+      if (error.isStandard()) {
+        toast.error(t(error.getTranslationKey()))
       } else {
-        const errors = error.errors
-
-        const duplicatedUsernameError = errors.find((error) => error.apiCode === AUTH_CREATE_USER_DUPLICATED_USERNAME)
-
-        if (duplicatedUsernameError) {
+        if (error.hasConflictError('username')) {
           form.setError('username', { type: 'server', message: t('username_already_in_used_error_message') })
         }
       }

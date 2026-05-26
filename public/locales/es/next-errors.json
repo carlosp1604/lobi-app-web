@@ -3,5 +3,10 @@
   "404_page_home_button_title": "Inicio",
   "404_page_image_alt_title": "Vincent Vega confundido",
   "404_page_subtitle": "¿Vincent? ¿Marsellus? ¿Hola...?",
-  "404_page_title": "404"
+  "404_page_title": "404",
+  "500_page_image_alt_title": "Meme de un perro en una habitación en llamas diciendo que todo está bien",
+  "500_page_title": "500",
+  "500_page_subtitle": "Vaya... parece que algo se ha roto por aquí",
+  "500_page_description": "Nuestro servidor está experimentando problemas inesperados en este momento. Estamos trabajando para sofocar el incendio, por favor inténtalo de nuevo más tarde.",
+  "500_page_home_button_title": "Volver al inicio"
 }

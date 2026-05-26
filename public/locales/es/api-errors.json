@@ -8,18 +8,23 @@
 
   "reset_password_invalid_token_message_title": "El código de verificación no es válido. Asegúrate de introducirlo correctamente.",
   "reset_password_same_password_message_title": "La nueva contraseña no puede ser igual a la anterior.",
-  "reset_password_token_already_expired_message_title": "El código de recuperación ha expirado. Solicita un nuevo código.",
+  "reset_password_token_already_expired_message_title": "El código ha expirado. Solicita uno nuevo.",
   "reset_password_token_already_used_message_title": "Este código de verificación ya ha sido utilizado.",
 
   "signup_invalid_token_message_title": "El código de verificación no es válido. Asegúrate de introducirlo correctamente.",
-  "signup_token_already_expired_message_title": "El código de registro ha caducado. Solicita un nuevo código.",
+  "signup_token_already_expired_message_title": "El código ha caducado. Solicita uno nuevo.",
   "signup_token_already_used_message_title": "Este código de verificación ya ha sido utilizado.",
-  "signup_username_taken_title": "Este nombre de usuario no está disponible.",
-  "signup_email_taken_title": "Este correo electrónico no está disponible.",
+  "signup_username_taken_message_title": "Este nombre de usuario no está disponible.",
+  "signup_email_taken_message_title": "Este correo electrónico no está disponible.",
 
   "validate_token_invalid_token_message_title": "El código de verificación no es válido. Asegúrate de introducirlo correctamente.",
-  "validate_token_token_already_expired_message_title": "El código ha caducado. Solicita un nuevo envío.",
+  "validate_token_token_already_expired_message_title": "El código ha caducado. Solicita uno nuevo.",
   "validate_token_token_already_used_message_title": "Este código de verificación ya ha sido utilizado.",
 
-  "unexpected-server-error": "Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo más tarde."
+  "unexpected_server_error_message_title": "Servicio no disponible. Por favor, inténtalo de nuevo más tarde.",
+  "unexpected_client_error_message_title": "Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo más tarde.",
+
+  "user_session_is_not_longer_valid_message_title": "Tu sesión ya no es válida. Por favor, inicia sesión de nuevo.",
+  "user_profile_not_found_message_title": "No se ha encontrado el perfil de usuario",
+  "user_username_is_not_valid_message_title": "El nombre de usuario introducido no es válido"
 }

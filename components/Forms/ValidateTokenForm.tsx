@@ -9,28 +9,22 @@ import {FieldGroup} from "~/components/ui/field";
 import {VerificationTokenLength} from "~/helpers/input.helper";
 import useTranslation from "next-translate/useTranslation";
 import {Result, success} from "~/types/Result";
-import {ServiceError} from "~/types/ServiceError";
 import {AuthService} from "~/services/auth/AuthService";
 import {VerificationTokenPurpose} from "~/types/auth/VerificationTokenPurpose";
 import {
-  AUTH_CREATE_USER_INVALID_TOKEN,
-  AUTH_CREATE_USER_TOKEN_ALREADY_EXPIRED,
-  AUTH_CREATE_USER_TOKEN_ALREADY_USED,
-  AUTH_RESET_PASSWORD_INVALID_TOKEN,
-  AUTH_RESET_PASSWORD_TOKEN_ALREADY_EXPIRED,
-  AUTH_RESET_PASSWORD_TOKEN_ALREADY_USED,
   AUTH_VALIDATE_TOKEN_ALREADY_EXPIRED,
   AUTH_VALIDATE_TOKEN_ALREADY_USED,
   AUTH_VALIDATE_TOKEN_INVALID_TOKEN
 } from "~/types/auth/ApiCodes";
 import {toast} from "sonner";
+import {AppServiceError} from "~/types/ServiceError";
 
 interface ValidateTokenFormProps {
   mode: 'signup' | 'reset';
   loading: boolean;
   email: string;
   onLoadingChange: (loading: boolean) => void;
-  onActionComplete?: (result: Result<string, ServiceError>) => void;
+  onActionComplete?: (result: Result<string, AppServiceError>) => void;
 }
 
 export function ValidateTokenForm({ mode, loading, email, onLoadingChange, onActionComplete}: ValidateTokenFormProps) {
@@ -68,10 +62,10 @@ export function ValidateTokenForm({ mode, loading, email, onLoadingChange, onAct
 
     if (!result.success) {
       const error = result.error
-      toast.error(t(error.key));
+      toast.error(t(error.getTranslationKey()));
 
-      if (invalidTokenErrors.includes(error.apiCode)) {
-        form.setError('token', { type: 'server', message: t(error.key) });
+      if (error.isApiErrorType(invalidTokenErrors)) {
+        form.setError('token', { type: 'server', message: t(error.getTranslationKey()) });
       }
 
       if (onActionComplete) {

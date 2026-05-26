@@ -1,9 +1,9 @@
-import {AuthAction, AuthState} from "~/context/AuthReducer";
-import {LoginResponseDto} from "~/types/auth/dto/LoginResponseDto";
-import {RefreshResponseDto} from "~/types/auth/dto/RefreshResponseDto";
 import {Dispatch} from "react";
-import {fail, Result, success} from "~/types/Result";
+import {LoginResponseDto} from "~/types/auth/dto/LoginResponseDto";
 import {AuthContextService} from "~/services/auth/AuthContextService";
+import {RefreshResponseDto} from "~/types/auth/dto/RefreshResponseDto";
+import {AuthAction, AuthState} from "~/context/AuthReducer";
+import {Result, success, fail} from "~/types/Result";
 
 export interface AuthStore {
   dispatch: Dispatch<AuthAction>;
@@ -57,7 +57,7 @@ export const performLogin = async (
   cleanupStorage();
   store.dispatch({ type: 'SET_UNAUTHENTICATED' });
 
-  return fail(result.error.key);
+  return fail(result.error.getTranslationKey());
 };
 
 export const performRefresh = async (store: AuthStore, failedAt?: number): Promise<Result<void, string>> => {
@@ -87,7 +87,7 @@ export const performRefresh = async (store: AuthStore, failedAt?: number): Promi
   cleanupStorage();
   store.dispatch({ type: 'SET_UNAUTHENTICATED' });
 
-  return fail(result.error.key);
+  return fail(result.error.getTranslationKey());
 };
 
 export const performLogout = async (store: AuthStore): Promise<Result<void, string>> => {
@@ -121,49 +121,77 @@ export const performInit = async (store: AuthStore): Promise<void> => {
     const userRaw = localStorage.getItem('userData');
 
     if (!accessAtRaw || !refreshAtRaw || !userRaw) {
-      throw new Error('Missing credentials');
+      cleanupStorage();
+      store.dispatch({ type: 'SET_UNAUTHENTICATED' });
+      return;
     }
 
     const now = Date.now();
     const accessTime = Date.parse(accessAtRaw);
-    if (isNaN(accessTime)) {
-      throw new Error('Invalid access token date');
-    }
+    const refreshTime = Date.parse(refreshAtRaw);
 
-    if (now >= accessTime) {
-      const refreshTime = Date.parse(refreshAtRaw);
-
-      if (isNaN(refreshTime) || now >= refreshTime) {
-        throw new Error('Refresh token expired');
-      }
-
-      const service = new AuthContextService();
-      const result = await service.refresh();
-
-      if (result.success) {
-        setupStorage(result.value);
-        store.dispatch({
-          type: 'SET_AUTHENTICATED',
-          payload: { user: result.value.userData, lastUpdate: Date.now() }
-        });
-      } else {
-        throw new Error('Initial refresh failed');
-      }
+    if (isNaN(accessTime) || isNaN(refreshTime)) {
+      cleanupStorage();
+      store.dispatch({ type: 'SET_UNAUTHENTICATED' });
       return;
     }
 
     const parsedUser = JSON.parse(userRaw);
+
     if (
       !parsedUser?.id ||
       !parsedUser?.username ||
       !parsedUser?.name ||
       parsedUser?.imageUrl === undefined
     ) {
-      throw new Error('Invalid user payload');
+      cleanupStorage();
+      store.dispatch({ type: 'SET_UNAUTHENTICATED' });
+      return;
     }
 
-    store.dispatch({ type: 'SET_AUTHENTICATED', payload: { user: parsedUser, lastUpdate: Date.now()} });
-  } catch (exception: unknown) {
+    if (now >= refreshTime) {
+      cleanupStorage();
+      store.dispatch({ type: 'SET_UNAUTHENTICATED' });
+      return;
+    }
+
+    if (now < accessTime) {
+      store.dispatch({
+        type: 'SET_AUTHENTICATED',
+        payload: { user: parsedUser, lastUpdate: Date.now() }
+      });
+      return;
+    }
+
+    const service = new AuthContextService();
+    const result = await service.refresh();
+
+    if (result.success) {
+      setupStorage(result.value);
+      store.dispatch({
+        type: 'SET_AUTHENTICATED',
+        payload: { user: result.value.userData, lastUpdate: Date.now() }
+      });
+      return;
+    }
+
+    const error = result.error;
+    const isNetworkError = error.infrastructure.type === 'network';
+    const isServerError = error.infrastructure.type === 'api' && error.infrastructure.statusCode && error.infrastructure.statusCode >= 500;
+
+    if (isNetworkError || isServerError) {
+      console.warn('Network or Server Error during token refresh. Hydrating with stale data.');
+
+      store.dispatch({
+        type: 'SET_AUTHENTICATED',
+        payload: { user: parsedUser, lastUpdate: Date.now() }
+      });
+    } else {
+      cleanupStorage();
+      store.dispatch({ type: 'SET_UNAUTHENTICATED' });
+    }
+
+  } catch {
     cleanupStorage();
     store.dispatch({ type: 'SET_UNAUTHENTICATED' });
   }

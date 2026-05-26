@@ -19,9 +19,9 @@ import {useAuth} from "~/hooks/useAuth";
 
 export default function AuthMenu() {
   const { t } = useTranslation('navigation');
-  const { status, user, logout } = useAuth();
+  const { status, user, logout, setLoginOpen } = useAuth();
   const router = useRouter();
-  const { pathname } = useRouter();
+  const { asPath } = useRouter();
 
   if (status === 'loading') {
     return (
@@ -47,7 +47,7 @@ export default function AuthMenu() {
             className="relative h-9 w-9 rounded-full cursor-pointer"
             aria-label={t('nav_bar_user_menu_aria')}
           >
-            <Avatar className="h-9 w-9 hover:scale-[1.05] ">
+            <Avatar className="h-9 w-9 hover:scale-[1.05]">
               <AvatarImage src={user.imageUrl || undefined} alt={t('nav_bar_avatar_alt')} />
               <AvatarFallback delayMs={600} aria-hidden="true">
                 {/** TODO: Extract to helper **/}
@@ -58,10 +58,7 @@ export default function AuthMenu() {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="w-56" align="end" forceMount sideOffset={8}>
-          <DropdownMenuLabel
-            className="font-normal"
-            aria-label={t('nav_bar_profile_dropdown_user_info', { userName: user.name})}
-          >
+          <DropdownMenuLabel aria-label={t('nav_bar_profile_dropdown_user_info', { userName: user.name})}>
             <div className="flex flex-col space-y-1">
               <p className="font-semibold leading-none text-foreground">
                 {user.name}
@@ -74,14 +71,13 @@ export default function AuthMenu() {
               </p>
             </div>
           </DropdownMenuLabel>
-
           <DropdownMenuSeparator />
 
           {
-            !isActivePath(`/users/${user.id}`, pathname) &&
-            <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(`/users/${user.id}`)}>
+            !isActivePath(`/users/${user.username}`, asPath) &&
+            <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(`/users/${user.username}`)}>
               <User className="mr-2 h-4 w-4" aria-hidden="true" />
-              {t('nav_bar_profile_dropdown_profile')}
+              { t('nav_bar_profile_dropdown_profile') }
             </DropdownMenuItem>
           }
 
@@ -94,6 +90,21 @@ export default function AuthMenu() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+    );
+  }
+
+  const isSignupActive = isActivePath('/auth/signup/', asPath);
+
+  if (isSignupActive) {
+    return (
+      <Button
+        variant="ghost"
+        className="h-9 w-9 cursor-pointer transition-transform hover:scale-[1.05] text-brand-primary"
+        onClick={() => setLoginOpen(true)}
+        aria-label={t('nav_bar_auth_login_button')}
+      >
+        <CircleUserRound className="h-5 w-5" />
+      </Button>
     );
   }
 
@@ -111,13 +122,7 @@ export default function AuthMenu() {
       <DropdownMenuContent align="end" className="w-48 mt-1">
         <DropdownMenuItem
           className="cursor-pointer font-medium"
-          onClick={() => {
-            const isCurrentPath = isActivePath('/auth/login', pathname)
-
-            if (isCurrentPath) {
-              return
-            }
-            router.push(`/auth/login/?callbackUrl=${encodeURIComponent(router.asPath)}`)}}
+          onClick={() => setLoginOpen(true)}
         >
           <LogIn className="mr-2 h-4 w-4 opacity-70" aria-hidden="true" />
           {t('nav_bar_auth_login_button')}

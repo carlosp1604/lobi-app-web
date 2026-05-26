@@ -1,13 +1,17 @@
-export interface LoginResponseDto {
-  accessToken: string
-  refreshToken: string
-  sessionId: string
-  accessTokenExpiresAt: string
-  refreshTokenExpiresAt: string
-  userData: {
-    id: string
-    name: string
-    username: string
-    imageUrl: string | null
-  }
-}
+import { z } from 'zod';
+
+export const LoginResponseSchema = z.object({
+  accessToken: z.string().min(1),
+  refreshToken: z.string().min(1),
+  sessionId: z.uuid(),
+  accessTokenExpiresAt: z.iso.datetime(),
+  refreshTokenExpiresAt: z.iso.datetime(),
+  userData: z.object({
+    id: z.uuid(),
+    name: z.string().min(1),
+    username: z.string().min(1),
+    imageUrl: z.url().nullable(),
+  }),
+});
+
+export type LoginResponseDto = z.infer<typeof LoginResponseSchema>;

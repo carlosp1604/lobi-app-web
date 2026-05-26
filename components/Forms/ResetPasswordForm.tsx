@@ -1,28 +1,28 @@
 'use client'
 
-import useTranslation from "next-translate/useTranslation";
 import * as z from "zod";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {FieldGroup} from "~/components/ui/field";
+import useTranslation from "next-translate/useTranslation";
+import {toast} from "sonner";
 import {Button} from "~/components/ui/button";
-import {Loader2} from "lucide-react";
-import {PasswordInputField} from "~/components/Forms/Input/PasswordInput";
-import {PasswordRegex} from "~/helpers/input.helper";
 import {Result} from "~/types/Result";
-import {ServiceError} from "~/types/ServiceError";
+import {Loader2} from "lucide-react";
+import {FieldGroup} from "~/components/ui/field";
 import {AuthService} from "~/services/auth/AuthService";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {PasswordRegex} from "~/helpers/input.helper";
+import {AppServiceError} from "~/types/ServiceError";
+import {PasswordInputField} from "~/components/Forms/Input/PasswordInput";
+import {Controller, useForm} from "react-hook-form";
 import {
   AUTH_RESET_PASSWORD_SAME_PASSWORD,
 } from "~/types/auth/ApiCodes";
-import {toast} from "sonner";
 
 interface ResetPasswordFormProps {
   email: string;
   verificationToken: string;
   loading: boolean;
   onLoadingChange: (loading: boolean) => void;
-  onActionComplete?: (result: Result<void, ServiceError>) => void;
+  onActionComplete?: (result: Result<void, AppServiceError>) => void;
 }
 
 export default function ResetPasswordForm({ email, verificationToken, loading, onLoadingChange, onActionComplete }: ResetPasswordFormProps) {
@@ -68,10 +68,10 @@ export default function ResetPasswordForm({ email, verificationToken, loading, o
     if (!result.success) {
       const error = result.error
 
-      toast.error(t(error.key));
+      toast.error(t(error.getTranslationKey()));
 
-      if (error.apiCode === AUTH_RESET_PASSWORD_SAME_PASSWORD) {
-        form.setError('password', { type: 'server', message: t(error.key)})
+      if (error.isApiErrorType(AUTH_RESET_PASSWORD_SAME_PASSWORD)) {
+        form.setError('password', { type: 'server', message: t(error.getTranslationKey())})
       }
 
       if (onActionComplete) {

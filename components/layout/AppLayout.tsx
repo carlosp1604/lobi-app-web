@@ -1,7 +1,7 @@
 import React from 'react';
-import AppNavbar from '~/components/Navbar/AppNavbar';
 import AppFooter from "~/components/Footer/AppFooter";
-import {Toaster} from "~/components/ui/sonner";
+import AppNavbar from '~/components/Navbar/AppNavbar';
+import { Toaster } from "~/components/ui/sonner";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -21,7 +21,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         expand={true}
       />
       <main className="grow pb-16">
-        <div className="container pt-6">
+        <div className="container pt-8">
           {children}
         </div>
       </main>

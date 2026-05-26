@@ -8,16 +8,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { AUTH_VERIFY_EMAIL_EMAIL_ALREADY_TAKEN, AUTH_VERIFY_EMAIL_TOKEN_ALREADY_ISSUED } from "~/types/auth/ApiCodes";
-import { ServiceError } from "~/types/ServiceError";
 import { AuthService } from "~/services/auth/AuthService";
 import { toast } from "sonner";
 import {Result, success} from "~/types/Result";
+import {AppServiceError} from "~/types/ServiceError";
 
 interface VerifyEmailFormProps {
   mode: 'signup' | 'reset';
   loading: boolean;
   onLoadingChange: (loading: boolean) => void;
-  onActionComplete?: (result: Result<string, ServiceError>) => void;
+  onActionComplete?: (result: Result<string, AppServiceError>) => void;
   onAlreadyHasCode: (email: string) => void;
 }
 
@@ -67,16 +67,16 @@ export function VerifyEmailForm({mode, loading, onLoadingChange, onActionComplet
     if (!result.success) {
       const error = result.error;
 
-      if (error.apiCode === AUTH_VERIFY_EMAIL_TOKEN_ALREADY_ISSUED) {
-        form.setError('email', {type: 'server', message: t(error.key)});
+      if (error.isApiErrorType(AUTH_VERIFY_EMAIL_TOKEN_ALREADY_ISSUED)) {
+        form.setError('email', {type: 'server', message: t(error.getTranslationKey())});
         setShowResend(true);
 
-        toast.warning(t(error.key));
-      } else if (error.apiCode === AUTH_VERIFY_EMAIL_EMAIL_ALREADY_TAKEN) {
-        form.setError('email', {type: 'server', message: t(error.key)});
-        toast.warning(t(error.key));
+        toast.warning(t(error.getTranslationKey()));
+      } else if (error.isApiErrorType(AUTH_VERIFY_EMAIL_EMAIL_ALREADY_TAKEN)) {
+        form.setError('email', {type: 'server', message: t(error.getTranslationKey())});
+        toast.warning(t(error.getTranslationKey()));
       } else {
-        toast.error(t(error.key));
+        toast.error(t(error.getTranslationKey()));
       }
 
       if (onActionComplete) {

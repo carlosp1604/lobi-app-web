@@ -17,10 +17,19 @@ import {Result} from "~/types/Result";
 
 export interface LoginFormProps {
   loading: boolean;
+  onLoadingChange: (loading:boolean) => void
   onActionComplete?: (result: Result<void, string>) => void;
+  onClickResetPassword: () => void
+  onClickSignup:() => void
 }
 
-export default function LoginForm({loading, onActionComplete}: LoginFormProps) {
+export default function LoginForm({
+  loading,
+  onLoadingChange,
+  onActionComplete,
+  onClickResetPassword,
+  onClickSignup,
+}: LoginFormProps) {
   const { t } = useTranslation('auth');
   const { login } = useAuth();
 
@@ -40,7 +49,11 @@ export default function LoginForm({loading, onActionComplete}: LoginFormProps) {
   });
 
   async function onSubmit(data: LoginFormValues) {
+    onLoadingChange(true)
+
     const result = await login(data.email, data.password);
+
+    onLoadingChange(false)
 
     if (!result.success) {
       form.setError('email', { type: 'manual', message: '' });
@@ -115,6 +128,7 @@ export default function LoginForm({loading, onActionComplete}: LoginFormProps) {
           <Link
             href="/auth/reset/"
             className="font-medium text-foreground hover:underline underline-offset-4"
+            onClick={onClickResetPassword}
           >
             {t('login_retrieve_password_link_title')}
           </Link>
@@ -123,6 +137,7 @@ export default function LoginForm({loading, onActionComplete}: LoginFormProps) {
             <Link
               href="/auth/signup/"
               className="font-medium text-foreground hover:underline underline-offset-4"
+              onClick={onClickSignup}
             >
               {t('login_signup_link_title')}
             </Link>

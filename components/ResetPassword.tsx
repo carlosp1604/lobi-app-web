@@ -11,11 +11,10 @@ import {
   AUTH_RESET_PASSWORD_INVALID_TOKEN,
   AUTH_RESET_PASSWORD_TOKEN_ALREADY_EXPIRED,
   AUTH_RESET_PASSWORD_TOKEN_ALREADY_USED,
-  AUTH_VALIDATE_TOKEN_ALREADY_EXPIRED,
-  AUTH_VALIDATE_TOKEN_ALREADY_USED,
-  AUTH_VALIDATE_TOKEN_INVALID_TOKEN
 } from "~/types/auth/ApiCodes";
-import {ServiceError} from "~/types/ServiceError";
+import {AppServiceError} from "~/types/ServiceError";
+import {useAuth} from "~/hooks/useAuth";
+import Link from "next/link";
 
 type ResetPasswordStep = 'verify-email' | 'validate-token' | 'reset' | 'confirm'
 
@@ -56,7 +55,10 @@ export function ResetPassword() {
   const [email, setEmail] = useState<string>('')
   const [verificationToken, setVerificationToken] = useState<string>('')
 
-  const onSendEmailComplete = (result: Result<string, ServiceError>): void => {
+  const { status, user, setLoginOpen } = useAuth();
+  const isAuthenticated = status === 'authenticated' && user;
+
+  const onSendEmailComplete = (result: Result<string, AppServiceError>): void => {
     if (result.success) {
       setEmail(result.value);
       setStep('validate-token');
@@ -69,7 +71,7 @@ export function ResetPassword() {
     setStep('validate-token')
   }
 
-  const onTokenValidationComplete = (result: Result<string, ServiceError>): void => {
+  const onTokenValidationComplete = (result: Result<string, AppServiceError>): void => {
     if (result.success) {
       setVerificationToken(result.value)
       setStep('reset')
@@ -94,7 +96,7 @@ export function ResetPassword() {
     */
   }
 
-  const onResetPasswordComplete = (result: Result<void, ServiceError>): void => {
+  const onResetPasswordComplete = (result: Result<void, AppServiceError>): void => {
     if (result.success) {
       setEmail('')
       setVerificationToken('')
@@ -111,12 +113,11 @@ export function ResetPassword() {
       AUTH_RESET_PASSWORD_INVALID_TOKEN,
     ];
 
-    if (fatalTokenErrors.includes(error.apiCode)) {
+    if (error.isApiErrorType(fatalTokenErrors)) {
       setEmail('');
       setVerificationToken('');
       setStep('verify-email');
     }
-
   }
 
   let content = null
@@ -175,19 +176,24 @@ export function ResetPassword() {
             </CardHeader>
 
             <CardContent className="flex flex-col gap-2 pt-2">
-              <Button
-                className="w-full cursor-pointer"
-                onClick={() => window.location.href = '/auth/login'}
-              >
-                {t('reset_password_confirm_step_login_button_title')}
+              <Button className="w-full cursor-pointer" asChild>
+                <Link href="/">
+                  {t('reset_password_confirm_step_home_button_title')}
+                </Link>
               </Button>
-              <Button
-                variant="outline"
-                className="w-full cursor-pointer"
-                onClick={() => window.location.href = '/'}
-              >
-                {t('reset_password_confirm_step_home_button_title')}
-              </Button>
+              {
+                isAuthenticated ? (
+                  <Button variant="outline" className="w-full cursor-pointer" asChild>
+                    <Link href={`/users/${user.username}/`}>
+                      { t('reset_password_confirm_step_profile_button_title') }
+                    </Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" className="w-full cursor-pointer" onClick={() => setLoginOpen(true)}>
+                    { t('reset_password_confirm_step_login_button_title') }
+                  </Button>
+                )
+              }
             </CardContent>
           </Card>
         </div>
@@ -206,7 +212,7 @@ export function ResetPassword() {
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-transparent transition-colors cursor-pointer -ml-2" // 🌟 '-ml-2' compensa el padding para que la flecha se alinee al borde izquierdo
+                  className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-transparent transition-colors cursor-pointer -ml-2"
                   onClick={() => {
                     const prev = ResetPasswordStepData[step].previous;
                     if (prev) {
@@ -224,11 +230,9 @@ export function ResetPassword() {
               {t(ResetPasswordStepData[step].descriptionKey)}
             </CardDescription>
           </CardHeader>
-
           <CardContent>
             {content}
           </CardContent>
-
           <CardFooter className="flex justify-end py-2 px-6 border-t bg-muted/30 rounded-b-lg">
           <span className="text-xs text-muted-foreground font-medium">
             {t('reset_password_step_n_of_total_title', {

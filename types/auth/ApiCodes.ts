@@ -1,9 +1,3 @@
-/** Global **/
-export const INTERNAL_SERVER_ERROR = 'internal-server-error'
-export const VALIDATION_ERROR = 'request-validation-error'
-export const UNAUTHORIZED_ACCESS = 'unauthorized-access'
-
-/** Auth **/
 export const AUTH_LOGIN_INVALID_EMAIL = 'auth-login-invalid-email'
 export const AUTH_LOGIN_INVALID_PASSWORD_FORMAT = 'auth-login-invalid-password-format'
 
@@ -21,21 +15,13 @@ export const AUTH_VALIDATE_TOKEN_INVALID_PURPOSE = 'auth-validate-token-invalid-
 export const AUTH_VALIDATE_TOKEN_INVALID_TOKEN = 'auth-validate-token-invalid-token'
 export const AUTH_VALIDATE_TOKEN_INVALID_TOKEN_FORMAT = 'auth-validate-token-invalid-token-format'
 
-export const AUTH_CREATE_USER_DUPLICATED_EMAIL = 'auth-create-user-duplicated-email'
-export const AUTH_CREATE_USER_DUPLICATED_USERNAME = 'auth-create-user-duplicated-username'
-export const AUTH_CREATE_USER_INVALID_EMAIL_FORMAT = 'auth-create-user-invalid-email-format'
-export const AUTH_CREATE_USER_INVALID_NAME_FORMAT = 'auth-create-user-invalid-name-format'
-export const AUTH_CREATE_USER_INVALID_PASSWORD_FORMAT = 'auth-create-user-invalid-password-format'
-export const AUTH_CREATE_USER_INVALID_TOKEN_FORMAT = 'auth-create-user-invalid-token-format'
-export const AUTH_CREATE_USER_INVALID_USER_ROLE = 'auth-create-user-invalid-user-role'
-export const AUTH_CREATE_USER_INVALID_USERNAME_FORMAT = 'auth-create-user-invalid-username-format'
+export const AUTH_CREATE_USER_DUPLICATED_DATA = 'auth-create-user-duplicated-data'
+export const AUTH_CREATE_USER_INVALID_INPUT = 'auth-create-user-invalid-input'
 export const AUTH_CREATE_USER_INVALID_TOKEN = 'auth-create-user-invalid-token'
 export const AUTH_CREATE_USER_TOKEN_ALREADY_EXPIRED = 'auth-create-user-token-already-expired'
 export const AUTH_CREATE_USER_TOKEN_ALREADY_USED = 'auth-create-user-token-already-used'
 
-export const AUTH_RESET_PASSWORD_INVALID_EMAIL_FORMAT = 'auth-reset-password-invalid-email-format'
-export const AUTH_RESET_PASSWORD_INVALID_PASSWORD_FORMAT = 'auth-reset-password-invalid-password-format'
-export const AUTH_RESET_PASSWORD_INVALID_TOKEN_FORMAT = 'auth-reset-password-invalid-token-format'
+export const AUTH_RESET_PASSWORD_INVALID_INPUT = 'auth-reset-password-invalid-input'
 export const AUTH_RESET_PASSWORD_INVALID_TOKEN = 'auth-reset-password-invalid-token'
 export const AUTH_RESET_PASSWORD_TOKEN_ALREADY_EXPIRED = 'auth-reset-password-token-already-expired'
 export const AUTH_RESET_PASSWORD_TOKEN_ALREADY_USED = 'auth-reset-password-token-already-used'

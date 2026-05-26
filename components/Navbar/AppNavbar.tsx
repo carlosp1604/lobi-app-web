@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, {useState} from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
@@ -26,11 +26,15 @@ import {
 } from '~/components/ui/dropdown-menu';
 import {isActivePath} from "~/helpers/path.helper";
 import AuthMenu from "~/components/Navbar/AuthMenu";
+import {LoginModal} from "~/components/LoginModal";
+import {useAuth} from "~/hooks/useAuth";
 
 
 export default function AppNavbar() {
   const { t } = useTranslation('navigation');
   const { pathname, push } = useRouter();
+
+  const { isLoginOpen, setLoginOpen } = useAuth();
 
   const isSearchActive = isActivePath('/activities/', pathname);
   const isCreateActive = isActivePath('/activities/create/', pathname);
@@ -40,6 +44,10 @@ export default function AppNavbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full">
+      <LoginModal
+        isOpen={isLoginOpen}
+        onOpenChange={setLoginOpen}
+      />
       <div className="container flex h-16 items-center justify-between px-4">
         <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-2" aria-label={t('nav_bar_home_link_aria')}>
@@ -178,7 +186,7 @@ export default function AppNavbar() {
             <Search className="h-5 w-5" aria-hidden="true"/>
           </Button>
 
-          <AuthMenu/>
+          <AuthMenu />
         </div>
       </div>
     </header>

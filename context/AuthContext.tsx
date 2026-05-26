@@ -1,5 +1,11 @@
 'use client'
 
+import * as Sentry from "@sentry/nextjs";
+import PQueue from 'p-queue';
+import {Result} from "~/types/Result";
+import {injectLoggerOut, injectRefresher} from "~/helpers/api.helper";
+import {AuthAction, AuthenticatedUser, authReducer, AuthStatus, initialState} from "~/context/AuthReducer";
+import {AuthStore, performInit, performLogin, performLogout, performRefresh} from "~/context/AuthOperations";
 import {
   createContext,
   useEffect,
@@ -9,12 +15,6 @@ import {
   useCallback,
   useMemo, useState
 } from 'react';
-import {AuthenticatedUser, authReducer, AuthStatus, initialState} from "~/context/AuthReducer";
-import {AuthStore, performInit, performLogin, performLogout, performRefresh} from "~/context/AuthOperations";
-import PQueue from 'p-queue';
-import {Result} from "~/types/Result";
-import {injectRefresher} from "~/helpers/api.helper";
-import * as Sentry from "@sentry/nextjs";
 
 interface AuthContextType {
   status: AuthStatus;
@@ -22,6 +22,8 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<Result<void, string>>;
   refresh: () => Promise<Result<void, string>>;
   logout: () => Promise<Result<void, string>>;
+  isLoginOpen: boolean;
+  setLoginOpen: (open: boolean) => void
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,12 +33,18 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [state, dispatch] = useReducer(authReducer, initialState);
+  const [state, reactDispatch] = useReducer(authReducer, initialState);
+  const [isLoginOpen, setLoginOpen] = useState<boolean>(false);
 
   const stateRef = useRef(state);
-  useEffect(() => {
-    stateRef.current = state;
-  }, [state]);
+
+  const dispatch = useCallback((action: AuthAction) => {
+    const newState = authReducer(stateRef.current, action);
+
+    stateRef.current = newState;
+
+    reactDispatch(action);
+  }, []);
 
   const getState = useCallback(() => stateRef.current, []);
 
@@ -57,7 +65,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   useEffect(() => {
-    queue.add(() => performInit(store));
+    queue.add(() => performInit(store)).then()
   }, [queue, store]);
 
   useEffect(() => {
@@ -66,27 +74,38 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       if (!result.success) {
         logout();
-
         return false;
       }
 
       return true;
     });
+
+    injectLoggerOut(async () => {
+      await logout();
+    });
   }, [queue, store]);
 
   useEffect(() => {
     if (state.user && state.status === 'authenticated') {
-      Sentry.setContext('User',{
+      Sentry.setUser({
         id: state.user.id,
         username: state.user.username,
       });
     } else {
-      Sentry.setContext('User', null);
+      Sentry.setUser(null);
     }
-  }, [state.user, state.status]);
+  }, [state]);
 
   return (
-    <AuthContext.Provider value={{ status: state.status, user: state.user, login, refresh, logout }}>
+    <AuthContext.Provider value={{
+      status: state.status,
+      user: state.user,
+      login,
+      refresh,
+      logout,
+      isLoginOpen,
+      setLoginOpen,
+    }}>
       {children}
     </AuthContext.Provider>
   );
