@@ -1,3 +1,5 @@
 {
-  "greetings_title": "Hola"
+  "map_search_label_title": "Búsqueda",
+  "map_search_input_placeholder_title": "Escribe una dirección...",
+  "map_radius_label_title": "Radio de búsqueda"
 }
