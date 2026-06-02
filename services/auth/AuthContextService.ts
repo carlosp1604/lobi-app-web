@@ -9,7 +9,7 @@ import {
 } from "~/types/shared/dto/StandardApiErrorResponseDto";
 import { LoginResponseDto, LoginResponseSchema } from "~/types/auth/dto/LoginResponseDto";
 import { RefreshResponseDto, RefreshResponseSchema } from "~/types/auth/dto/RefreshResponseDto";
-import { AppServiceError } from "~/types/ServiceError";
+import { AppServiceError } from "~/types/AppServiceError";
 import { UNAUTHORIZED_ACCESS } from "~/types/shared/ApiCodes";
 
 export class AuthContextService {

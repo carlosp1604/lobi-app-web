@@ -24,9 +24,9 @@ export function LoginModal({ isOpen, onOpenChange }: LoginModalProps) {
   const handleActionComplete = (result: Result<void, string>) => {
     if (result.success) {
       onOpenChange(false);
+      toast.success(t('login_success_message_title'));
     }
 
-    toast.success(t('login_success_message_title'));
   };
 
   return (

@@ -11,7 +11,7 @@ import { AUTH_VERIFY_EMAIL_EMAIL_ALREADY_TAKEN, AUTH_VERIFY_EMAIL_TOKEN_ALREADY_
 import { AuthService } from "~/services/auth/AuthService";
 import { toast } from "sonner";
 import {Result, success} from "~/types/Result";
-import {AppServiceError} from "~/types/ServiceError";
+import {AppServiceError} from "~/types/AppServiceError";
 
 interface VerifyEmailFormProps {
   mode: 'signup' | 'reset';

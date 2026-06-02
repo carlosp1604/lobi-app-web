@@ -12,7 +12,7 @@ import {
   AUTH_CREATE_USER_TOKEN_ALREADY_USED,
 } from "~/types/auth/ApiCodes";
 import SignupForm from "~/components/Forms/SignupForm";
-import {AppServiceError} from "~/types/ServiceError";
+import {AppServiceError} from "~/types/AppServiceError";
 import {useAuth} from "~/hooks/useAuth";
 import {useRouter} from "next/router";
 import Link from "next/link";

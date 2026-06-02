@@ -1,5 +1,5 @@
 import { z } from "zod";
-import {FieldErrorDetailTypes} from "~/types/ServiceError";
+import {FieldErrorDetailTypes} from "~/types/AppServiceError";
 
 export const StandardApiErrorResponseSchema = z.object({
   code: z.string(),

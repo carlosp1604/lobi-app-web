@@ -12,7 +12,7 @@ import {
   AUTH_RESET_PASSWORD_TOKEN_ALREADY_EXPIRED,
   AUTH_RESET_PASSWORD_TOKEN_ALREADY_USED,
 } from "~/types/auth/ApiCodes";
-import {AppServiceError} from "~/types/ServiceError";
+import {AppServiceError} from "~/types/AppServiceError";
 import {useAuth} from "~/hooks/useAuth";
 import Link from "next/link";
 

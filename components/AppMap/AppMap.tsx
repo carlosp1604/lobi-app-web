@@ -20,11 +20,15 @@ function MapCameraHandler({ center }: { center: google.maps.LatLngLiteral }) {
 }
 
 export type AppMapProps = {
+  initialLocation?: google.maps.LatLngLiteral
+  initialRadius?: number
   onRadiusChange?: (radius: number) => void
   onLocationChange: (location: google.maps.LatLngLiteral) => void
 }
 
 export default function AppMap({
+  initialLocation,
+  initialRadius,
   onLocationChange,
   onRadiusChange = undefined
 }: AppMapProps) {
@@ -32,26 +36,30 @@ export default function AppMap({
 
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''
 
-  const [location, setLocation] = useState<google.maps.LatLngLiteral>(SPAIN_FALLBACK_LOCATION)
+  const [location, setLocation] = useState<google.maps.LatLngLiteral>(initialLocation || SPAIN_FALLBACK_LOCATION)
   const [radius, setRadius] = useState<number>(DEFAULT_RADIUS_METERS)
 
-  const defaultRadius = 1000
+  const defaultRadius = initialRadius ?? 1000
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const newLocation = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          }
-          setLocation(newLocation)
-          onLocationChange(newLocation)
-        },
-        () => { onLocationChange(SPAIN_FALLBACK_LOCATION) }
-      )
+    if (!initialLocation) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const newLocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            }
+            setLocation(newLocation)
+            onLocationChange(newLocation)
+          },
+          () => { onLocationChange(SPAIN_FALLBACK_LOCATION) }
+        )
+      } else {
+        onLocationChange(SPAIN_FALLBACK_LOCATION)
+      }
     } else {
-      onLocationChange(SPAIN_FALLBACK_LOCATION)
+      onLocationChange(initialLocation)
     }
 
     if (onRadiusChange) {
@@ -104,7 +112,7 @@ export default function AppMap({
             />
           </Field>
         }
-        <div className="w-full h-full flex relative rounded-xl overflow-hidden border border-border">
+        <div className="w-full h-full flex relative rounded-md">
           <Map
             style={{ width: '100%', height: '100%' }}
             colorScheme={'LIGHT'}

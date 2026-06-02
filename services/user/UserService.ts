@@ -1,6 +1,6 @@
 import { fail, Result, success } from "~/types/Result";
 import { protectedClient } from "~/helpers/api.helper";
-import { AppServiceError } from "~/types/ServiceError";
+import { AppServiceError } from "~/types/AppServiceError";
 import { ApiClient } from "~/helpers/ApiClient";
 import { reportApiErrorToSentry } from "~/helpers/sentry.helper";
 import {

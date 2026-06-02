@@ -17,7 +17,7 @@ import {
   AUTH_VALIDATE_TOKEN_INVALID_TOKEN
 } from "~/types/auth/ApiCodes";
 import {toast} from "sonner";
-import {AppServiceError} from "~/types/ServiceError";
+import {AppServiceError} from "~/types/AppServiceError";
 
 interface ValidateTokenFormProps {
   mode: 'signup' | 'reset';

@@ -19,6 +19,9 @@ const i18nConfig = {
     ],
     'rgx:^/user': [
       'user',
+    ],
+    'rgx:^/activities': [
+      'activities',
     ]
   },
 }

@@ -1,6 +1,6 @@
 import { ApiClientErrorEnvelope } from "~/helpers/ApiClient";
 
-export const FieldErrorDetailTypes = ['validation', 'conflict'] as const;
+export const FieldErrorDetailTypes = ['validation', 'conflict', 'unavailable', 'missing'] as const;
 export type FieldErrorDetailType = (typeof FieldErrorDetailTypes)[number];
 
 export interface FieldErrorDetail {
@@ -106,6 +106,10 @@ export class AppServiceError {
 
   public getFieldError(fieldName: string): FieldErrorDetail | undefined {
     return this.fields?.[fieldName];
+  }
+
+  public getFields(): Record<string, FieldErrorDetail> {
+    return this.fields ?? {};
   }
 
   public hasConflictError(fieldName: string): boolean {

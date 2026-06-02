@@ -15,7 +15,7 @@ import {toast} from "sonner";
 import {UserNameInput} from "~/components/Forms/Input/UserNameInput";
 import {UserUsernameInput} from "~/components/Forms/Input/UserUsernameInput";
 import {UserRole} from "~/types/users/UserRole";
-import {AppServiceError} from "~/types/ServiceError";
+import {AppServiceError} from "~/types/AppServiceError";
 
 interface SignupFormProps {
   email: string;

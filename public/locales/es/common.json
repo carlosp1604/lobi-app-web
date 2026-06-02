@@ -1,5 +1,10 @@
 {
   "map_search_label_title": "Búsqueda",
   "map_search_input_placeholder_title": "Escribe una dirección...",
-  "map_radius_label_title": "Radio de búsqueda"
+  "map_radius_label_title": "Radio de búsqueda",
+  "coordinates_lat_invalid_range_message_title": "Latitud debe ser un valor entre -90 y 90",
+  "coordinates_lng_invalid_range_message_title": "Longitud debe ser un valor entre -180 y 180",
+  "date_time_picker_time_title": "Hora: ",
+  "information_modal_confirm_button_title": "Entendido",
+  "login_to_perform_operation_title": "Inicia sesión para realizar esta acción"
 }

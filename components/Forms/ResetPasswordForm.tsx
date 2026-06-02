@@ -10,7 +10,7 @@ import {FieldGroup} from "~/components/ui/field";
 import {AuthService} from "~/services/auth/AuthService";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {PasswordRegex} from "~/helpers/input.helper";
-import {AppServiceError} from "~/types/ServiceError";
+import {AppServiceError} from "~/types/AppServiceError";
 import {PasswordInputField} from "~/components/Forms/Input/PasswordInput";
 import {Controller, useForm} from "react-hook-form";
 import {

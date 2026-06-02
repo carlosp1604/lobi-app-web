@@ -28,7 +28,7 @@ import {
   AUTH_VERIFY_EMAIL_EMAIL_ALREADY_TAKEN,
   AUTH_VERIFY_EMAIL_TOKEN_ALREADY_ISSUED,
 } from "~/types/auth/ApiCodes";
-import { AppServiceError, FieldErrorDetail } from "~/types/ServiceError";
+import { AppServiceError, FieldErrorDetail } from "~/types/AppServiceError";
 import { EmptyResponseSchema } from "~/types/shared/dto/EmptyResponseDto";
 import {UNAUTHORIZED_ACCESS} from "~/types/shared/ApiCodes";
 
