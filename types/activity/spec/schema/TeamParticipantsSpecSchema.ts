@@ -55,13 +55,13 @@ export const createTeamParticipantsSpecSchema = (config: TeamParticipantsSpecSch
       });
     }
 
-    if (minPlayers ) {
-      const maxCapacity = maxTeams * playersPerTeam;
+    if (minPlayers) {
+      const requiredToFillMinTeams = minTeams * playersPerTeam;
 
-      if (minPlayers > maxCapacity) {
+      if (minPlayers > requiredToFillMinTeams) {
         ctx.addIssue({
           code: 'custom',
-          message: t('team_participants_min_players_absolute_message_title', { min: absoluteMinPlayers, max: maxCapacity }),
+          message: t('team_participants_min_players_exceeds_min_teams_capacity', { min: absoluteMinPlayers, max: requiredToFillMinTeams }),
           path: ['minPlayers'],
         });
       }

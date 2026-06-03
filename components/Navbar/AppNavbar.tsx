@@ -1,11 +1,14 @@
 'use client'
 
-import React, {useState} from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import AuthMenu from "~/components/Navbar/AuthMenu";
 import useTranslation from 'next-translate/useTranslation';
-import {Search, ChevronDown, Activity, Plus, HelpCircle, Milestone, Menu, CircleEllipsis} from 'lucide-react';
 import { Button } from '~/components/ui/button';
+import { useAuth } from "~/hooks/useAuth";
+import { useRouter } from 'next/router';
+import { LoginModal } from "~/components/LoginModal";
+import { isActivePath } from "~/helpers/path.helper";
+import { Search, Plus, HelpCircle, Milestone, CircleEllipsis} from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -15,7 +18,6 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '~/components/ui/navigation-menu';
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,11 +26,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
-import {isActivePath} from "~/helpers/path.helper";
-import AuthMenu from "~/components/Navbar/AuthMenu";
-import {LoginModal} from "~/components/LoginModal";
-import {useAuth} from "~/hooks/useAuth";
-
 
 export default function AppNavbar() {
   const { t } = useTranslation('navigation');
@@ -43,7 +40,7 @@ export default function AppNavbar() {
   const isActivitiesParentActive = isSearchActive || isCreateActive;
 
   return (
-    <header className="sticky top-0 z-50 w-full">
+    <header className="sticky top-0 z-50 w-full bg-background">
       <LoginModal
         isOpen={isLoginOpen}
         onOpenChange={setLoginOpen}
@@ -121,7 +118,6 @@ export default function AppNavbar() {
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
-
             </NavigationMenuList>
           </NavigationMenu>
 
@@ -185,7 +181,6 @@ export default function AppNavbar() {
           >
             <Search className="h-5 w-5" aria-hidden="true"/>
           </Button>
-
           <AuthMenu />
         </div>
       </div>

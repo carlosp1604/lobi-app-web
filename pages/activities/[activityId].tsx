@@ -1,9 +1,9 @@
+import { ActivityDetails } from "~/components/ActivityDetails";
 import { ActivityService } from "~/services/activitity/ActivityService";
 import { GetServerSideProps } from "next";
 import { GetActivityResponseDto } from "~/types/activity/dto/GetActivityResponseDto";
+import { InformationModalProvider } from "~/context/InformationModalProvider";
 import { GET_ACTIVITY_ACTIVITY_NOT_FOUND } from "~/types/activity/ApiCodes";
-import {ActivityDetails} from "~/components/ActivityDetails";
-import {InformationModalProvider} from "~/context/InformationModalProvider";
 
 export type ActivityPageProps = {
   activityData: GetActivityResponseDto
@@ -15,8 +15,6 @@ export const getServerSideProps = (async (context) =>  {
   if (!activityId || Array.isArray(activityId)) {
     return { notFound: true,}
   }
-
-  console.log(context.req.headers.cookie);
 
   const cookieHeader = context.req.headers.cookie;
 

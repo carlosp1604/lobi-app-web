@@ -1,12 +1,13 @@
 import * as React from "react";
 import { cn } from "~/lib/utils";
 import { LucideIcon } from "lucide-react";
+import { HTMLAttributes, ReactNode } from "react";
 
-interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
+interface EmptyStateProps extends HTMLAttributes<HTMLDivElement> {
   icon: LucideIcon;
   title: string;
   description?: string;
-  actions?: React.ReactNode;
+  actions?: ReactNode;
 }
 
 export function EmptyState({

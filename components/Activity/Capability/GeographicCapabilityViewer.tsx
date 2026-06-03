@@ -55,8 +55,6 @@ export const GeographicCapabilityViewer = ({ capability }: GeographicCapabilityV
   const { t } = useTranslation('activities');
   const { name, type, data } = capability;
 
-  console.log(data);
-
   const parseCoords = (latStr?: string, lngStr?: string) => {
     if (!latStr || !lngStr) {
       return null;

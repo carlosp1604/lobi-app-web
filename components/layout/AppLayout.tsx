@@ -1,10 +1,10 @@
-import React from 'react';
 import AppFooter from "~/components/Footer/AppFooter";
 import AppNavbar from '~/components/Navbar/AppNavbar';
 import { Toaster } from "~/components/ui/sonner";
+import { ReactNode } from "react";
 
 interface AppLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function AppLayout({ children }: AppLayoutProps) {

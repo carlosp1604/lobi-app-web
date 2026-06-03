@@ -86,7 +86,11 @@ export function TeamParticipantsSpecInput({
                   if (!showMaxTeams) {
                     setValue(`${name}.maxTeams`, e.target.value, { shouldValidate: true });
                   } else {
-                    trigger(`${name}.maxTeams`).then()
+                    void trigger(`${name}.maxTeams`);
+                  }
+
+                  if (showMinPlayers) {
+                    void trigger(`${name}.minPlayers`);
                   }
                 }}
               />
@@ -102,18 +106,26 @@ export function TeamParticipantsSpecInput({
         <Controller
           name={`${name}.playersPerTeam`}
           control={control}
-          render={({ field, fieldState }) => (
+          render={({ field: { value, onChange, ...fieldProps }, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>
+              <FieldLabel htmlFor={fieldProps.name}>
                 { t('team_participants_players_per_team_label_title')}
               </FieldLabel>
               <Input
-                {...field}
-                id={field.name}
+                {...fieldProps}
+                id={fieldProps.name}
                 aria-invalid={fieldState.invalid}
                 type="number"
-                placeholder={t('team_participants_players_per_team_input_placeholder_title')}
                 step={1}
+                placeholder={t('team_participants_players_per_team_input_placeholder_title')}
+                value={value}
+                onChange={(e) => {
+                  onChange(e.target.value);
+
+                  if (showMinPlayers) {
+                    void trigger(`${name}.minPlayers`);
+                  }
+                }}
               />
               <div className="h-4 -mt-0.5">
                 {fieldState.invalid && fieldState.error && (
@@ -154,7 +166,7 @@ export function TeamParticipantsSpecInput({
                   step={1}
                   onChange={(e) => {
                     onChange(e.target.value);
-                    trigger(`${name}.minTeams`).then()
+                    void trigger(`${name}.minTeams`);
                   }}
                 />
                 <div className="h-4 -mt-0.5">
@@ -173,7 +185,6 @@ export function TeamParticipantsSpecInput({
             control={control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                {/* ESTRUCTURA CORREGIDA: Label y Botón hermanos */}
                 <div className="flex items-center justify-between">
                   <FieldLabel htmlFor={field.name}>
                     { t('team_participants_min_players_label_title')}

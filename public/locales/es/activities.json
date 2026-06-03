@@ -162,6 +162,7 @@
   "team_participants_max_teams_invalid_range_message_title": "Debe estar entre {{min}} y {{max}}",
   "team_participants_players_per_team_invalid_range_message_title": "Debe estar entre {{min}} y {{max}}",
   "team_participants_min_players_absolute_min_message_title": "Debe ser al menos {{min}}",
+  "team_participants_min_players_exceeds_min_teams_capacity": "Debe estar entre {{min}} y {{max}}",
   "team_participants_min_players_absolute_message_title": "Debe estar entre {{min}} y {{max}}",
   "team_participants_add_max_teams_button_title": "+ Añadir máximo de equipos",
   "team_participants_add_min_players_button_title": "+ Añadir mínimo de jugadores",

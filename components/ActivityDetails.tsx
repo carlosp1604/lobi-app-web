@@ -8,9 +8,10 @@ import { ActivitySpecDto } from "~/types/activity/dto/config/spec/SpecDto";
 import { UNAUTHORIZED_ACCESS } from "~/types/shared/ApiCodes";
 import { ActivityCapabilityDto } from "~/types/activity/dto/config/capability/CapabilityDto";
 import { useEffect, useRef, useState } from "react";
-import { GetActivityResponseDto, ActivityParticipationDto } from "~/types/activity/dto/GetActivityResponseDto";
+import { GetActivityResponseDto } from "~/types/activity/dto/GetActivityResponseDto";
 import { useInformationModal } from "~/hooks/useInformationModal";
 import { ActivityService } from "~/services/activitity/ActivityService";
+import { Loader } from "~/components/AppLoader";
 import { toast } from "sonner";
 import {
   CANCEL_ACTIVITY_ACTIVITY_NOT_FOUND,
@@ -18,7 +19,6 @@ import {
   LEAVE_ACTIVITY_ACTIVITY_NOT_FOUND,
   LEAVE_ACTIVITY_USER_IS_NOT_A_PARTICIPANT
 } from "~/types/activity/ApiCodes";
-import { Loader } from "~/components/AppLoader";
 
 const ActivitySpecs = dynamic(
   () => import('~/components/Activity/ActivitySpecs').then((module) => module.ActivitySpecs),
@@ -51,80 +51,57 @@ export interface ActivityDetailsProps {
 export const ActivityDetails = ({ activityData }: ActivityDetailsProps) => {
   const router = useRouter();
   const { status, user, setLoginOpen } = useAuth();
-
   const { t } = useTranslation('activities');
+  const { showModal } = useInformationModal();
 
   const prevAuthStatus = useRef(status);
 
-  const { activity, host, sport, isHost, isParticipant, participation } = activityData;
-
-  const { showModal } = useInformationModal()
-
   const [loading, setLoading] = useState(false);
-  const [localParticipants, setLocalParticipants] = useState(activity.currentParticipants);
-  const [localIsParticipant, setLocalIsParticipant] = useState(isParticipant);
-  const [localIsHost, setLocalIsHost] = useState(isHost);
-  const [localParticipation, setLocalParticipation] = useState<ActivityParticipationDto | null>(participation);
 
-  const cleanContext = () => {
-    setLocalIsHost(false);
-    setLocalIsParticipant(false);
-    setLocalParticipation(null);
-  };
+  const { activity, host, sport, isHost, isParticipant, participation } = activityData;
 
   useEffect(() => {
     if (prevAuthStatus.current === 'unauthenticated' && status === 'authenticated') {
-      router.replace(router.asPath, undefined, { scroll: false }).then();
+      void router.replace(router.asPath, undefined, { scroll: false });
     }
     else if (prevAuthStatus.current === 'authenticated' && status === 'unauthenticated') {
-      cleanContext();
+      void router.replace(router.asPath, undefined, { scroll: false });
     }
 
-    prevAuthStatus.current = status;
+    if (status !== 'loading') {
+      prevAuthStatus.current = status;
+    }
   }, [status, router]);
 
   const onJoin = async () => {
     if (!user || status !== "authenticated") {
-      toast.warning(t('common:login_to_perform_operation_title'))
+      toast.warning(t('common:login_to_perform_operation_title'));
       setLoginOpen(true);
-
       return;
     }
 
     setLoading(true);
-
     const activityService = new ActivityService();
-    const response = await activityService.joinActivity(activityData.activity.id);
-
+    const response = await activityService.joinActivity(activity.id);
     setLoading(false);
 
     if (response.success) {
-      setLocalParticipants((prev) => prev + 1);
-      setLocalIsParticipant(true);
-      setLocalParticipation({
-        id: 'temp-participation-uuid',
-        userId: user ? user.id : '',
-        joinedAt: new Date().toISOString()
-      });
-
-      toast.success(t('activity_details_successful_join_title_message'))
-
-      return
+      await router.replace(router.asPath, undefined, { scroll: false });
+      toast.success(t('activity_details_successful_join_title_message'));
+      return;
     }
 
-    const error = response.error
+    const error = response.error;
 
     if (error.isApiErrorType(JOIN_ACTIVITY_ACTIVITY_NOT_FOUND)) {
       toast.warning(t(error.getTranslationKey()));
-
       await router.replace("/");
       return;
     }
 
     if (error.isApiErrorType(UNAUTHORIZED_ACCESS)) {
       toast.warning(t(error.getTranslationKey()));
-
-      cleanContext();
+      await router.replace(router.asPath, undefined, { scroll: false });
       return;
     }
 
@@ -132,65 +109,40 @@ export const ActivityDetails = ({ activityData }: ActivityDetailsProps) => {
       title: t('activity_details_join_error_title_message'),
       description: t(error.getTranslationKey()),
       level: 'error'
-    })
+    });
 
     await router.replace(router.asPath, undefined, { scroll: false });
   };
 
   const onLeave = async () => {
     if (!user || status !== "authenticated") {
-      toast.warning(t('common:login_to_perform_operation_title'))
+      toast.warning(t('common:login_to_perform_operation_title'));
       setLoginOpen(true);
-
       return;
     }
 
     setLoading(true);
-
     const activityService = new ActivityService();
-    const response = await activityService.leaveActivity(activityData.activity.id);
-
+    const response = await activityService.leaveActivity(activity.id);
     setLoading(false);
 
     if (response.success) {
-      const wasHost = localIsHost
-      setLocalParticipants((prev) => Math.max(0, prev - 1));
-      setLocalIsParticipant(false);
-      setLocalIsHost(false);
-      setLocalParticipation(null);
-
-      if (wasHost) {
-        await router.replace(router.asPath, undefined, { scroll: false })
-      }
-
-      toast.success(t('activity_details_successful_leave_title_message'))
-
-      return
+      await router.replace(router.asPath, undefined, { scroll: false });
+      toast.success(t('activity_details_successful_leave_title_message'));
+      return;
     }
 
-    const error = response.error
+    const error = response.error;
 
     if (error.isApiErrorType(LEAVE_ACTIVITY_ACTIVITY_NOT_FOUND)) {
       toast.warning(t(error.getTranslationKey()));
-
       await router.replace("/");
       return;
     }
 
-    if (error.isApiErrorType(UNAUTHORIZED_ACCESS)) {
+    if (error.isApiErrorType(UNAUTHORIZED_ACCESS) || error.isApiErrorType(LEAVE_ACTIVITY_USER_IS_NOT_A_PARTICIPANT)) {
       toast.warning(t(error.getTranslationKey()));
-
-      cleanContext();
-      return;
-    }
-
-    if (error.isApiErrorType(LEAVE_ACTIVITY_USER_IS_NOT_A_PARTICIPANT)) {
-      setLocalParticipants((prev) => Math.max(0, prev - 1));
-      cleanContext();
-
-      toast.success(t('activity_details_successful_leave_title_message'));
       await router.replace(router.asPath, undefined, { scroll: false });
-
       return;
     }
 
@@ -205,40 +157,33 @@ export const ActivityDetails = ({ activityData }: ActivityDetailsProps) => {
 
   const onCancel = async () => {
     if (!user || status !== "authenticated") {
-      toast.warning(t('common:login_to_perform_operation_title'))
+      toast.warning(t('common:login_to_perform_operation_title'));
       setLoginOpen(true);
-
       return;
     }
 
     setLoading(true);
-
     const activityService = new ActivityService();
-    const response = await activityService.cancelActivity(activityData.activity.id);
-
+    const response = await activityService.cancelActivity(activity.id);
     setLoading(false);
 
     if (response.success) {
-      await router.replace(router.asPath, undefined, { scroll: false })
-
-      toast.success(t('activity_details_successful_cancelled_title_message'))
-
-      return
+      await router.replace(router.asPath, undefined, { scroll: false });
+      toast.success(t('activity_details_successful_cancelled_title_message'));
+      return;
     }
 
-    const error = response.error
+    const error = response.error;
 
     if (error.isApiErrorType(CANCEL_ACTIVITY_ACTIVITY_NOT_FOUND)) {
       toast.warning(t(error.getTranslationKey()));
-
       await router.replace("/");
       return;
     }
 
     if (error.isApiErrorType(UNAUTHORIZED_ACCESS)) {
       toast.warning(t(error.getTranslationKey()));
-
-      cleanContext();
+      await router.replace(router.asPath, undefined, { scroll: false });
       return;
     }
 
@@ -251,23 +196,18 @@ export const ActivityDetails = ({ activityData }: ActivityDetailsProps) => {
     await router.replace(router.asPath, undefined, { scroll: false });
   };
 
-  const dynamicActivity = {
-    ...activity,
-    currentParticipants: localParticipants,
-  };
-
-  const specs = activity.activityConfig.specs as Record<string, ActivitySpecDto>
-  const capabilities = activity.activityConfig.capabilities as Record<string, ActivityCapabilityDto>
+  const specs = activity.activityConfig.specs as Record<string, ActivitySpecDto>;
+  const capabilities = activity.activityConfig.capabilities as Record<string, ActivityCapabilityDto>;
 
   return (
     <div className="max-w-2xl w-full mx-auto p-4 space-y-8">
       <ActivityHeader
-        activity={dynamicActivity}
-        participation={localParticipation}
+        activity={activity}
+        participation={participation}
         sport={sport}
         host={host}
-        isHost={localIsHost}
-        isParticipant={localIsParticipant}
+        isHost={isHost}
+        isParticipant={isParticipant}
         onJoin={onJoin}
         onLeave={onLeave}
         onCancel={onCancel}
