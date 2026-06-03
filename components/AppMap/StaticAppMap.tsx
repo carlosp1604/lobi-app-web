@@ -1,10 +1,5 @@
-import useTranslation from "next-translate/useTranslation";
-import { Slider } from "~/components/ui/slider";
-import { MapCircle } from './MapCircle'
-import { Field, FieldLabel } from "~/components/ui/field";
-import { PlaceAutocomplete } from './PlaceAutocomplete'
-import { useState, useEffect } from 'react'
-import { APIProvider, Map, AdvancedMarker, useMap, MapMouseEvent } from '@vis.gl/react-google-maps'
+import { useState } from 'react'
+import { APIProvider, Map, AdvancedMarker } from '@vis.gl/react-google-maps'
 
 export type StaticAppMapProps = {
   location: google.maps.LatLngLiteral
@@ -25,9 +20,9 @@ export default function StaticAppMap({ location }: StaticAppMapProps) {
           keyboardShortcuts={false}
           reuseMaps={true}
           gestureHandling="greedy"
-          mapId="app-map"
+          mapId="app-map-read-only"
           disableDefaultUI={true}
-          center={location}
+          defaultCenter={location}
           zoom={zoom}
           onZoomChanged={(e) => setZoom(e.detail.zoom)}
         >

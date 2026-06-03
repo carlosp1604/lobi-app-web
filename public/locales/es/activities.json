@@ -223,6 +223,7 @@
   "activity_details_capabilities_lat_lng_help_title": "{{lat}}, {{lng}}",
   "activity_details_capabilities_start_lat_lng_help_title": "Inicio: {{lat}}, {{lng}}",
   "activity_details_capabilities_end_lat_lng_help_title": "Destino: {{lat}}, {{lng}}",
+  "activity_details_capabilities_average_title": "Promedio: {{average}}",
   "activity_details_specs_individual_participants_title": "Participantes",
   "activity_details_specs_individual_participants_modality_title": "Individual",
   "activity_details_specs_individual_participants_exact_count_title": "{{count}} jugadores",

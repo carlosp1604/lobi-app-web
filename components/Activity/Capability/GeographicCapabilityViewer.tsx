@@ -1,5 +1,6 @@
 import StaticAppMap from "~/components/AppMap/StaticAppMap";
 import useTranslation from "next-translate/useTranslation";
+import { ReactNode } from "react";
 import { MapPinIcon, FlagIcon } from 'lucide-react';
 import { LocationCapabilityDto, LocationRangeCapabilityDto } from "~/types/activity/dto/config/capability/CapabilityDto";
 
@@ -12,7 +13,7 @@ interface SingleLocationMapCardProps {
   description: string;
   helpText?: string;
   location: { lat: number; lng: number };
-  icon: React.ReactNode;
+  icon: ReactNode;
 }
 
 const SingleLocationMapCard = ({
@@ -53,6 +54,8 @@ const SingleLocationMapCard = ({
 export const GeographicCapabilityViewer = ({ capability }: GeographicCapabilityViewerProps) => {
   const { t } = useTranslation('activities');
   const { name, type, data } = capability;
+
+  console.log(data);
 
   const parseCoords = (latStr?: string, lngStr?: string) => {
     if (!latStr || !lngStr) {

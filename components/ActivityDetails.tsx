@@ -1,11 +1,11 @@
+import dynamic from "next/dynamic";
 import useTranslation from "next-translate/useTranslation";
 import { useAuth } from "~/hooks/useAuth";
 import { Separator } from "~/components/ui/separator";
 import { useRouter } from "next/router";
 import { ActivityHeader } from "~/components/Activity/ActivityHeader";
-import { ActivitySpecs } from "~/components/ActivitySpecs";
 import { ActivitySpecDto } from "~/types/activity/dto/config/spec/SpecDto";
-import { ActivityCapabilities } from "~/components/Activity/ActivityCapabilities";
+import { UNAUTHORIZED_ACCESS } from "~/types/shared/ApiCodes";
 import { ActivityCapabilityDto } from "~/types/activity/dto/config/capability/CapabilityDto";
 import { useEffect, useRef, useState } from "react";
 import { GetActivityResponseDto, ActivityParticipationDto } from "~/types/activity/dto/GetActivityResponseDto";
@@ -18,7 +18,31 @@ import {
   LEAVE_ACTIVITY_ACTIVITY_NOT_FOUND,
   LEAVE_ACTIVITY_USER_IS_NOT_A_PARTICIPANT
 } from "~/types/activity/ApiCodes";
-import { UNAUTHORIZED_ACCESS } from "~/types/shared/ApiCodes";
+import { Loader } from "~/components/AppLoader";
+
+const ActivitySpecs = dynamic(
+  () => import('~/components/Activity/ActivitySpecs').then((module) => module.ActivitySpecs),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[300px] flex items-center justify-center">
+        <Loader />
+      </div>
+    )
+  }
+)
+
+const ActivityCapabilities = dynamic(
+  () => import('~/components/Activity/ActivityCapabilities').then((module) => module.ActivityCapabilities),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[300px] flex items-center justify-center">
+        <Loader />
+      </div>
+    )
+  }
+)
 
 export interface ActivityDetailsProps {
   activityData: GetActivityResponseDto

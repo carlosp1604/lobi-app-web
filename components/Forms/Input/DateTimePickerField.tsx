@@ -77,7 +77,7 @@ export function DateTimePickerField({ name, lang, control, label, buttonTitle }:
                   variant="outline"
                   className={cn(
                     "w-full justify-start text-left font-normal",
-                    "h-auto py-2 whitespace-normal",
+                    "h-auto py-2 whitespace-normal cursor-pointer",
                     !isDateValid && "text-muted-foreground normal-case",
                     fieldState.invalid && "border-destructive text-destructive"
                   )}

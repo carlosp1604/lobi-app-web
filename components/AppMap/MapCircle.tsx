@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
 import { useMap } from '@vis.gl/react-google-maps'
+import { useEffect, useRef } from 'react'
 
 interface MapCircleProps {
   center: google.maps.LatLngLiteral

@@ -4,8 +4,6 @@ import useTranslation from 'next-translate/useTranslation';
 export default function AppFooter() {
   const { t } = useTranslation('navigation');
 
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className="w-full text-foreground py-12 mt-auto">
       <div className="container mx-auto px-4">
@@ -20,7 +18,7 @@ export default function AppFooter() {
         </div>
 
         <div className="pt-4 flex flex-col sm:flex-row justify-between items-start gap-4 text-xs">
-          <p>{t('footer_app_copyright_title', {currentYear})}</p>
+          <p>{t('footer_app_copyright_title', { currentYear: 2026 })}</p>
         </div>
       </div>
     </footer>

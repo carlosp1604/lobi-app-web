@@ -16,6 +16,8 @@ export const getServerSideProps = (async (context) =>  {
     return { notFound: true,}
   }
 
+  console.log(context.req.headers.cookie);
+
   const cookieHeader = context.req.headers.cookie;
 
   const activityService = new ActivityService();
@@ -41,9 +43,6 @@ export const getServerSideProps = (async (context) =>  {
   }
 
   const activityData = result.value
-  if (!activityData) {
-    return { notFound: true };
-  }
 
   return { props: { activityData } }
 }) satisfies GetServerSideProps<ActivityPageProps>

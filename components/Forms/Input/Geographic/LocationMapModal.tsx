@@ -17,7 +17,7 @@ const AppMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-[400px] bg-muted animate-pulse rounded-xl flex items-center justify-center text-muted-foreground text-sm">
+      <div className="w-full h-[300px] bg-muted animate-pulse rounded-xl flex items-center justify-center text-muted-foreground text-sm">
         <Loader />
       </div>
     )
@@ -69,7 +69,7 @@ export function LocationMapModal({ isOpen, title, initialLocation, onClose, onCo
             {t('geographic_modal_description_title')}
           </DialogDescription>
         </DialogHeader>
-        <div className="h-[500px] overflow-hidden p-1">
+        <div className="h-[300px] md:h-[500px] overflow-hidden p-1">
           {isOpen && (
             <AppMap
               initialLocation={tempLocation || undefined}
@@ -85,7 +85,10 @@ export function LocationMapModal({ isOpen, title, initialLocation, onClose, onCo
           >
             {t('geographic_modal_cancel_button_title')}
           </Button>
-          <Button type="button" onClick={handleSave} disabled={!tempLocation}>
+          <Button
+            type="button"
+            onClick={handleSave}
+          >
             {t('geographic_modal_confirm_button_title')}
           </Button>
         </DialogFooter>
