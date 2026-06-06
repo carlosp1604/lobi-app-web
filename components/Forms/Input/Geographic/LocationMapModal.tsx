@@ -81,8 +81,8 @@ export const LocationMapModal = ({
     >
       <DialogContent
         className={ cn(
-          'flex flex-col pt-10 min-w-full h-screen rounded-none',
-          'md:h-auto md:pt-8 md:rounded-lg md:max-w-lg md:min-w-auto',
+          'flex flex-col pt-8 min-w-full h-full rounded-none',
+          'md:h-auto md:rounded-lg md:max-w-lg md:min-w-auto',
           'duration-300 ease-fast-out zoom-in-98'
         ) }
       >

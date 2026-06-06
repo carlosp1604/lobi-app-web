@@ -35,8 +35,8 @@ export function LoginModal({ isOpen, onOpenChange }: LoginModalProps) {
     <Dialog open={ isOpen } onOpenChange={ onOpenChange }>
       <DialogContent
         className={ cn(
-          'flex flex-col justify-start min-w-full h-screen rounded-none pt-24',
-          'md:max-w-md md:min-w-auto md:h-auto md:py-8 md:rounded-lg',
+          'flex flex-col justify-center py-8 min-w-full h-full rounded-none',
+          'md:max-w-md md:min-w-auto md:h-auto md:rounded-lg',
           'duration-300 ease-fast-out zoom-in-98'
         ) }
       >
