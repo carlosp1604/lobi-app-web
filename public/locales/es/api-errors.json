@@ -32,6 +32,8 @@
 
   "get_activity_activity_not_found_message_title": "La actividad solicitada no existe",
 
+  "get_activities_invalid_params_message_title": "Los parámetros de búsqueda introducidos no son válidos",
+
   "join_activity_activity_not_found_message_title": "La actividad a la que intentas unirte no existe. Serás redirigido a la página principal",
   "join_activity_user_already_joined_message_title": "Ya estás participando en esta actividad",
   "join_activity_activity_does_not_allow_new_participants_message_title": "La actividad ya no permite nuevos participantes, ya sea porque su estado no lo permite o porque la actividad ya empezó",

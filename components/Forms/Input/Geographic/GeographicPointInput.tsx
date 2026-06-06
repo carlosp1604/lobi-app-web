@@ -1,9 +1,11 @@
-import useTranslation from "next-translate/useTranslation";
-import { Button } from "~/components/ui/button";
-import { MapPin } from "lucide-react";
-import { useState } from "react";
-import { LocationMapModal } from "~/components/Forms/Input/Geographic/LocationMapModal";
-import { Controller, useFormContext, useWatch } from "react-hook-form";
+'use client'
+
+import useTranslation from 'next-translate/useTranslation'
+import { Button } from '~/components/ui/button'
+import { MapPin } from 'lucide-react'
+import { useState } from 'react'
+import { LocationMapModal } from '~/components/Forms/Input/Geographic/LocationMapModal'
+import { Controller, useFormContext, useWatch } from 'react-hook-form'
 import {
   Field,
   FieldDescription,
@@ -11,21 +13,21 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet
-} from "~/components/ui/field";
+} from '~/components/ui/field'
 
 interface GeographicPointInputProps {
   name: string
-  title: string;
-  description: string;
+  title: string
+  description: string
 }
 
-export function GeographicPointInput({ name, title, description }: GeographicPointInputProps) {
-  const { t } = useTranslation('activities');
-  const [isMapOpen, setIsMapOpen] = useState(false);
+export const GeographicPointInput = ({ name, title, description }: GeographicPointInputProps) => {
+  const { t } = useTranslation('activities')
+  const [isMapOpen, setIsMapOpen] = useState(false)
 
-  const { control, setValue } = useFormContext();
+  const { control, setValue } = useFormContext()
 
-  const value = useWatch({ control, name });
+  const value = useWatch({ control, name })
 
   return (
     <FieldSet>
@@ -39,38 +41,38 @@ export function GeographicPointInput({ name, title, description }: GeographicPoi
         <Controller
           control={ control }
           name={ name }
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>
+          render={ ({ field, fieldState }) => (
+            <Field data-invalid={ fieldState.invalid }>
+              <FieldLabel htmlFor={ field.name }>
                 { t('geographic_location_label_title') }
               </FieldLabel>
               <Button
-                aria-invalid={fieldState.invalid}
+                aria-invalid={ fieldState.invalid }
                 type="button"
                 variant="outline"
-                className="w-full justify-start font-normal gap-2"
-                onClick={() => setIsMapOpen(true)}
+                className="w-full justify-start font-normal gap-2 rounded-lg"
+                onClick={ () => setIsMapOpen(true) }
               >
                 <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
-                {value.lat && value.lng
+                { value.lat && value.lng
                   ? `${Number(value.lat).toFixed(5)}, ${Number(value.lng).toFixed(5)}`
-                  : t('geographic_search_placeholder_title')}
+                  : t('geographic_search_placeholder_title') }
               </Button>
             </Field>
-          )}
+          ) }
         />
       </FieldGroup>
 
       <LocationMapModal
-        isOpen={isMapOpen}
-        title={t('geographic_modal_location_title')}
-        initialLocation={value.lat && value.lng ? value : null}
-        onClose={() => setIsMapOpen(false)}
-        onConfirm={(loc) => {
-          setValue(name, loc, { shouldValidate: true});
-          setIsMapOpen(false);
-        }}
+        isOpen={ isMapOpen }
+        title={ t('geographic_modal_location_title') }
+        initialLocation={ value.lat && value.lng ? value : null }
+        onClose={ () => setIsMapOpen(false) }
+        onConfirm={ (loc) => {
+          setValue(name, loc, { shouldValidate: true })
+          setIsMapOpen(false)
+        } }
       />
     </FieldSet>
-  );
+  )
 }

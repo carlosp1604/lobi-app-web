@@ -1,22 +1,22 @@
-import { ApiClientErrorEnvelope } from "~/helpers/ApiClient";
+import { ApiClientErrorEnvelope } from '~/helpers/ApiClient'
 
-export const FieldErrorDetailTypes = ['validation', 'conflict', 'unavailable', 'missing'] as const;
-export type FieldErrorDetailType = (typeof FieldErrorDetailTypes)[number];
+export const FieldErrorDetailTypes = ['validation', 'conflict', 'unavailable', 'missing'] as const
+export type FieldErrorDetailType = (typeof FieldErrorDetailTypes)[number]
 
 export interface FieldErrorDetail {
-  readonly key: string;
-  readonly type: FieldErrorDetailType;
+  readonly key: string
+  readonly type: FieldErrorDetailType
 }
 
-export type ServiceErrorKind = 'standard' | 'form' | 'non-ui';
+export type ServiceErrorKind = 'standard' | 'form' | 'non-ui'
 
 export class AppServiceError {
-  public readonly infrastructure: ApiClientErrorEnvelope;
+  public readonly infrastructure: ApiClientErrorEnvelope
 
-  private readonly key: string;
-  private readonly apiCode?: string;
-  private readonly statusCode?: number;
-  private readonly fields?: Record<string, FieldErrorDetail>;
+  private readonly key: string
+  private readonly apiCode?: string
+  private readonly statusCode?: number
+  private readonly fields?: Record<string, FieldErrorDetail>
   private readonly kind: ServiceErrorKind
 
   private constructor(
@@ -25,22 +25,22 @@ export class AppServiceError {
     kind: ServiceErrorKind,
     apiCode?: string,
     statusCode?: number,
-    fields?: Record<string, FieldErrorDetail>,
+    fields?: Record<string, FieldErrorDetail>
   ) {
-    this.infrastructure = infrastructure;
-    this.key = key;
-    this.kind = kind;
-    this.apiCode = apiCode;
-    this.statusCode = statusCode;
-    this.fields = fields;
+    this.infrastructure = infrastructure
+    this.key = key
+    this.kind = kind
+    this.apiCode = apiCode
+    this.statusCode = statusCode
+    this.fields = fields
   }
 
   static createStandard(key: string, apiCode: string, envelope: ApiClientErrorEnvelope): AppServiceError {
     if (envelope.type !== 'api') {
-      throw new Error('[AppServiceError] createStandard requires an "api" type envelope');
+      throw new Error('[AppServiceError] createStandard requires an "api" type envelope')
     }
 
-    return new AppServiceError(envelope, key, 'standard', apiCode, envelope.statusCode, undefined);
+    return new AppServiceError(envelope, key, 'standard', apiCode, envelope.statusCode, undefined)
   }
 
   static createForm(
@@ -50,93 +50,93 @@ export class AppServiceError {
     envelope: ApiClientErrorEnvelope
   ): AppServiceError {
     if (envelope.type !== 'api') {
-      throw new Error('[AppServiceError] createForm requires an "api" type envelope');
+      throw new Error('[AppServiceError] createForm requires an "api" type envelope')
     }
 
-    return new AppServiceError(envelope, key, 'form', apiCode, envelope.statusCode, fields);
+    return new AppServiceError(envelope, key, 'form', apiCode, envelope.statusCode, fields)
   }
 
   static createNonUIError(envelope: ApiClientErrorEnvelope): AppServiceError {
     if (envelope.type === 'api') {
-      throw new Error('[AppServiceError] createNonUIError cannot receive an "api" type envelope');
+      throw new Error('[AppServiceError] createNonUIError cannot receive an "api" type envelope')
     }
 
-    const key = 'api-errors:unexpected_client_error_message_title';
+    const key = 'api-errors:unexpected_client_error_message_title'
 
-    const statusCode = envelope.type === 'validation' ? envelope.statusCode : undefined;
+    const statusCode = envelope.type === 'validation' ? envelope.statusCode : undefined
 
-    return new AppServiceError(envelope, key, 'non-ui', undefined, statusCode, undefined);
+    return new AppServiceError(envelope, key, 'non-ui', undefined, statusCode, undefined)
   }
 
   public isApiError(): boolean {
-    return this.infrastructure.type === 'api';
+    return this.infrastructure.type === 'api'
   }
 
   public isStandard(): boolean {
-    return this.kind === 'standard';
+    return this.kind === 'standard'
   }
 
   public isForm(): boolean {
-    return this.kind === 'form';
+    return this.kind === 'form'
   }
 
   public getTranslationKey(): string {
-    return this.key;
+    return this.key
   }
 
   public isApiErrorType(code: string | Array<string>): boolean {
     if (!this.apiCode) {
-      return false;
+      return false
     }
 
     if (Array.isArray(code)) {
-      return code.includes(this.apiCode);
+      return code.includes(this.apiCode)
     }
 
-    return this.apiCode === code;
+    return this.apiCode === code
   }
 
   public isStatusCode(code: number): boolean {
     if (!this.statusCode) {
-      return false;
+      return false
     }
 
-    return this.statusCode === code;
+    return this.statusCode === code
   }
 
   public getFieldError(fieldName: string): FieldErrorDetail | undefined {
-    return this.fields?.[fieldName];
+    return this.fields?.[fieldName]
   }
 
   public getFields(): Record<string, FieldErrorDetail> {
-    return this.fields ?? {};
+    return this.fields ?? {}
   }
 
   public hasConflictError(fieldName: string): boolean {
-    const field = this.getFieldError(fieldName);
+    const field = this.getFieldError(fieldName)
 
     if (!field) {
-      return false;
+      return false
     }
 
-    return field.type === 'conflict';
+    return field.type === 'conflict'
   }
 
   public hasValidationError(fieldName: string): boolean {
-    const field = this.getFieldError(fieldName);
+    const field = this.getFieldError(fieldName)
 
     if (!field) {
-      return false;
+      return false
     }
 
-    return field.type === 'validation';
+    return field.type === 'validation'
   }
 
   public getRequestId(): string {
     if (this.infrastructure.type === 'api' || this.infrastructure.type === 'validation') {
-      return this.infrastructure.requestId;
+      return this.infrastructure.requestId
     }
 
-    return 'unknown';
+    return 'unknown'
   }
 }

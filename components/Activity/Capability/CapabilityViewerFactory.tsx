@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
+import { ReactNode } from 'react'
 import {
   ActivityCapabilityDto,
   LocationCapabilityDto,
   LocationRangeCapabilityDto, MagnitudeRangeCapabilityDto
-} from "~/types/activity/dto/config/capability/CapabilityDto";
-import { MagnitudeRangeCapabilityViewer } from "~/components/Activity/Capability/MagnitudeCapabilityViewer";
-import { GeographicCapabilityViewer } from "~/components/Activity/Capability/GeographicCapabilityViewer";
+} from '~/types/activity/dto/config/capability/CapabilityDto'
+import { MagnitudeRangeCapabilityViewer } from '~/components/Activity/Capability/MagnitudeCapabilityViewer'
+import { GeographicCapabilityViewer } from '~/components/Activity/Capability/GeographicCapabilityViewer'
 
 export class CapabilityViewerFactory {
   public static getComponent(capability: ActivityCapabilityDto): ReactNode | null {
@@ -13,37 +13,37 @@ export class CapabilityViewerFactory {
       return null
     }
 
-    const capabilityName = capability.name;
+    const capabilityName = capability.name
 
     switch (capability.type) {
       case 'scalar_range':
         return (
           <MagnitudeRangeCapabilityViewer
-            key={capability.name}
-            capability={capability as MagnitudeRangeCapabilityDto}
+            key={ capability.name }
+            capability={ capability as MagnitudeRangeCapabilityDto }
           />
-        );
+        )
 
       case 'scalar_point':
-        return null;
+        return null
 
       case 'geographic_point':
       case 'geographic_range':
         return (
           <GeographicCapabilityViewer
-            key={capability.name}
-            capability={capability as LocationCapabilityDto | LocationRangeCapabilityDto}
+            key={ capability.name }
+            capability={ capability as LocationCapabilityDto | LocationRangeCapabilityDto }
           />
-        );
+        )
 
       case 'route':
-        return null;
+        return null
 
       case 'multiple_choice':
-        return null;
+        return null
 
       default:
-        throw Error(`Viewer for capability ${capabilityName} is not registered`);
+        throw Error(`Viewer for capability ${capabilityName} is not registered`)
     }
   }
 }

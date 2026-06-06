@@ -4,8 +4,8 @@ const i18nConfig = {
   loadLocaleFrom: (lang, ns) => {
     return new Promise((resolve, reject) => {
       import(`./public/locales/${lang}/${ns}.json`)
-          .then((module) => resolve(module.default))
-          .catch((exception) => reject((exception)))
+        .then((module) => resolve(module.default))
+        .catch((exception) => reject((exception)))
     })
   },
   logBuild: true,
@@ -19,11 +19,19 @@ const i18nConfig = {
     ],
     'rgx:^/user': [
       'user',
+      'activities'
     ],
     'rgx:^/activities': [
       'activities',
+    ],
+    'rgx:^/faq': [
+      'faq'
+    ],
+    'rgx:^/roadmap': [
+      'roadmap'
     ]
   },
 }
 
+// eslint-disable-next-line no-undef
 module.exports = i18nConfig

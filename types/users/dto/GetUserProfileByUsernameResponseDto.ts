@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const GetUserProfileByUsernameResponseSchema = z.object({
   id: z.uuid(),
@@ -8,6 +8,6 @@ export const GetUserProfileByUsernameResponseSchema = z.object({
   bio: z.string().nullable(),
   birthDate: z.iso.datetime().nullable(),
   createdAt: z.iso.datetime(),
-});
+})
 
-export type GetUserProfileByUsernameResponseDto = z.infer<typeof GetUserProfileByUsernameResponseSchema>;
+export type GetUserProfileByUsernameResponseDto = z.infer<typeof GetUserProfileByUsernameResponseSchema>

@@ -1,18 +1,20 @@
-import useTranslation from "next-translate/useTranslation";
-import {ActivitySpecDto} from "~/types/activity/dto/config/spec/SpecDto";
-import {SpecViewerFactory} from "~/components/Activity/Spec/SpecViewerFactory";
+'use client'
+
+import useTranslation from 'next-translate/useTranslation'
+import { ActivitySpecDto } from '~/types/activity/dto/config/spec/SpecDto'
+import { SpecViewerFactory } from '~/components/Activity/Spec/SpecViewerFactory'
 
 export interface ActivitySpecsProps {
-  specs: Record<string, ActivitySpecDto>;
+  specs: Record<string, ActivitySpecDto>
 }
 
 export const ActivitySpecs = ({ specs }: ActivitySpecsProps) => {
-  const { t } = useTranslation('activities');
+  const { t } = useTranslation('activities')
 
-  const specKeys = Object.keys(specs || {});
+  const specKeys = Object.keys(specs || {})
 
   if (specKeys.length === 0) {
-    return null;
+    return null
   }
 
   return (
@@ -22,10 +24,10 @@ export const ActivitySpecs = ({ specs }: ActivitySpecsProps) => {
       </h2>
 
       <div className="grid grid-cols-1">
-        {specKeys.map((specName) => {
-          return SpecViewerFactory.getComponent(specs[specName]);
-        })}
+        { specKeys.map((specName) => {
+          return SpecViewerFactory.getComponent(specs[specName])
+        }) }
       </div>
     </section>
-  );
-};
+  )
+}

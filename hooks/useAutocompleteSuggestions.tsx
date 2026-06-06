@@ -1,11 +1,12 @@
-import {useEffect, useRef, useState} from 'react';
-import {useMapsLibrary} from '@vis.gl/react-google-maps';
+import { useEffect, useRef, useState } from 'react'
+import { useMapsLibrary } from '@vis.gl/react-google-maps'
 
-export type UseAutocompleteSuggestionsReturn = {
-  suggestions: google.maps.places.AutocompleteSuggestion[];
-  isLoading: boolean;
-  resetSession: () => void;
-};
+// Solution from: https://github.com/visgl/react-google-maps/blob/main/examples/autocomplete/src/hooks/use-autocomplete-suggestions.ts
+export interface UseAutocompleteSuggestionsReturn {
+  suggestions: google.maps.places.AutocompleteSuggestion[]
+  isLoading: boolean
+  resetSession: () => void
+}
 
 /**
  * A reusable hook that retrieves autocomplete suggestions from the Google Places API.
@@ -44,61 +45,64 @@ export function useAutocompleteSuggestions(
   inputString: string,
   requestOptions: Partial<google.maps.places.AutocompleteRequest> = {}
 ): UseAutocompleteSuggestionsReturn {
-  const placesLib = useMapsLibrary('places');
+  const placesLib = useMapsLibrary('places')
 
   // stores the current sessionToken
   const sessionTokenRef =
-    useRef<google.maps.places.AutocompleteSessionToken | null>(null);
+    useRef<google.maps.places.AutocompleteSessionToken | null>(null)
 
   // the suggestions based on the specified input
   const [suggestions, setSuggestions] = useState<
     google.maps.places.AutocompleteSuggestion[]
-  >([]);
+  >([])
 
   // indicates if there is currently an incomplete request to the places API
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   // once the PlacesLibrary is loaded and whenever the input changes, a query
   // is sent to the Autocomplete Data API.
   useEffect(() => {
-    if (!placesLib) return;
+    if (!placesLib) return
 
-    const {AutocompleteSessionToken, AutocompleteSuggestion} = placesLib;
+    const { AutocompleteSessionToken, AutocompleteSuggestion } = placesLib
 
     // Create a new session if one doesn't already exist. This has to be reset
     // after `fetchFields` for one of the returned places is called by calling
     // the `resetSession` function returned from this hook.
     if (!sessionTokenRef.current) {
-      sessionTokenRef.current = new AutocompleteSessionToken();
+      sessionTokenRef.current = new AutocompleteSessionToken()
     }
 
     const request: google.maps.places.AutocompleteRequest = {
       ...requestOptions,
       input: inputString,
-      sessionToken: sessionTokenRef.current
-    };
+      sessionToken: sessionTokenRef.current,
+    }
 
     if (inputString === '') {
       if (suggestions.length > 0) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setSuggestions([]);
+        // eslint-disable-next-line @eslint-react/set-state-in-effect
+        setSuggestions([])
       }
-      return;
+
+      return
     }
 
-    setIsLoading(true);
+    // eslint-disable-next-line @eslint-react/set-state-in-effect
+    setIsLoading(true)
     AutocompleteSuggestion.fetchAutocompleteSuggestions(request).then(res => {
-      setSuggestions(res.suggestions);
-      setIsLoading(false);
-    });
-  }, [placesLib, inputString]);
+      setSuggestions(res.suggestions)
+      setIsLoading(false)
+    })
+  // eslint-disable-next-line @eslint-react/exhaustive-deps
+  }, [placesLib, inputString])
 
   return {
     suggestions,
     isLoading,
     resetSession: () => {
-      sessionTokenRef.current = null;
-      setSuggestions([]);
-    }
-  };
+      sessionTokenRef.current = null
+      setSuggestions([])
+    },
+  }
 }

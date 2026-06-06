@@ -24,6 +24,8 @@
 
   "user_security_loading_title": "Cargando preferencias",
 
+  "user_activities_loading_title": "Cargando actividades",
+
   "user_security_security_settings_title": "Configuración de Seguridad",
   "user_security_security_settings_password_title": "Contraseña",
   "user_security_security_settings_password_last_modified_title": "Cambiada hace {{time}}",
@@ -31,5 +33,23 @@
   "user_security_security_settings_change_password_button_title": "Cambiar",
 
   "user_profile_inactive_tab_description": "Esta función aún no está disponible",
-  "user_profile_inactive_tab_title": "Trabajando..."
+  "user_profile_inactive_tab_title": "Trabajando...",
+
+  "user_activities_filters_bar_search_button_title": "Buscar",
+  "user_activities_filters_bar_role_both_role_title": "Ambos",
+  "user_activities_filters_bar_role_host_role_title": "Organizador",
+  "user_activities_filters_bar_role_participant_role_title": "Participante",
+  "user_activities_filters_bar_role_dropdown_button_title": "Rol: {{type}}",
+  "user_activities_filters_bar_sport_dropdown_any_sport_title": "Cualquier deporte",
+  "user_activities_filters_bar_statuses_dropdown_button_title": "Cualquier estado",
+  "user_activities_filters_bar_statuses_selected_count_title": "{{count}} seleccionados",
+  "user_activities_filters_bar_statuses_open_status_title": "Abiertas",
+  "user_activities_filters_bar_statuses_confirmed_status_title": "Confirmadas",
+  "user_activities_filters_bar_statuses_cancelled_status_title": "Canceladas",
+  "user_activities_filters_bar_statuses_finished_status_title": "Finalizadas",
+  "user_activities_filters_bar_sort_date_desc_option_title": "Más lejanas",
+  "user_activities_filters_bar_sort_date_asc_option_title": "Más próximas",
+  "user_activities_total_activities_title": " actividades encontradas",
+  "user_activities_empty_state_title": "No hemos encontrado nada",
+  "user_activities_empty_state_description": "Parece que el usuario {{userName}} no tiene actividades que cumplan con tus criterios de búsqueda"
 }

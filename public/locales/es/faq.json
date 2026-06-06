@@ -1,0 +1,22 @@
+{
+  "faq_h1_title": "Preguntas frecuentes",
+  "faq_description": "Aquí encontrarás las respuesta a las preguntas más frecuentes sobre {{appName}}",
+  "faq_whats_app_question_title": "¿Qué es {{appName}}?",
+  "faq_whats_app_answer_title": "{{appName}} es la plataforma ideal para organizar y unirte a actividades deportivas en tu ciudad. La ídea es simple: ingresa, conecta con deportistas cerca de tí y queda para practicar deporte juntos. Ya sea que quieras probar nuevas aventuras o medir tu nivel, {{appName}} es tu aplicación.",
+  "faq_how_to_signup_question_title": "¿Necesito una cuenta para usar {{appName}}?",
+  "faq_how_to_signup_answer_title": "Sí, necesitas una cuenta para poder crear o inscribirte en las actividades disponibles. Pero no te preocupes, el registro es muy sencillo. Actualmente puedes ingresar con el método de registro tradicional mediante correo electrónico y contraseña, pero tenemos previsto incorporar nuevos métodos de inicio de sesión muy pronto para ponértelo aún más fácil.",
+  "faq_is_secure_question_title": "¿Están mis datos protegidos?",
+  "faq_is_secure_answer_title": "Totalmente. Nos tomamos tu privacidad muy en serio. Tus datos personales están encriptados y solo mostramos la información estrictamente necesaria al resto de jugadores para que el partido pueda llevarse a cabo.",
+  "faq_how_to_search_activities_question_title": "¿Cómo encuentro actividades cerca de mi?",
+  "faq_how_to_search_activities_answer_title": "Solo tienes que ir al buscador principal, seleccionar tu ubicación en el mapa y ajustar el radio de búsqueda. Contamos con filtros útiles para que afines tu búsqueda por deporte, estado, nivel o huecos disponibles.",
+  "faq_how_to_join_an_activity_question_title": "¿Cómo me uno a una actividad?",
+  "faq_how_to_join_an_activity_answer_title": "Solo tienes que buscar un partido que te encaje, comprobar que hay plazas libres y pulsar en el botón de unirse. Aparecerás automáticamente en la lista de participantes de esa actividad.",
+  "faq_how_to_create_activities_question_title": "¿Cómo creo una nueva actividad?",
+  "faq_how_to_create_activities_answer_title": "Si prefieres tomar la iniciativa, puedes organizar tu propio encuentro. Podrás definir el deporte, la fecha, el número máximo de participantes, entre otros datos. La plataforma cuenta con métricas avanzadas para que los usuarios sepan exactamente las condiciones de cada actividad.",
+  "faq_what_if_dont_attend_question_title": "¿Qué sucede si no puedo acudir a una actividad?",
+  "faq_what_if_dont_attend_answer_title": "Confiamos en la responsabilidad de la comunidad. Entendemos que surgen imprevistos, por ello puedes cancelar tu asistencia desde tu panel de usuario. Te rogamos que lo hagas con la mayor antelación posible, así tu plaza quedará libre para otro usuario.",
+  "faq_how_levels_work_question_title": "¿Cómo funcionan los niveles?",
+  "faq_how_levels_work_answer_title": "En deportes donde la experiencia es importante, utilizamos un sistema de niveles. Puedes filtrar los partidos por nivel para asegurarte de que juegas con personas de habilidades similares. Esto garantiza partidos equilibrados y más divertidos para todos. ¿Buscas niveles específicos para cada deporte? Buenas noticias, estamos trabajando en ello.",
+  "faq_is_that_all_question_title": "¿Esto es todo?",
+  "faq_is_that_all_answer_title": "¡Esto es solo el principio! {{appName}} está en constante evolución. Seguimos trabajando en nuevas funciones para mejorar la experiencia de la comunidad. Puedes consultar la sección 'Roadmap' para descubrir todas las novedades que están por llegar."
+}

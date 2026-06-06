@@ -1,14 +1,14 @@
-import { PaceField } from "~/components/Activity/Capability/PaceField";
-import { DurationField } from "~/components/Activity/Capability/DurationField";
-import { InputGroup, InputGroupInput, InputGroupText } from "~/components/ui/input-group";
+import { PaceField } from '~/components/Activity/Capability/PaceField'
+import { DurationField } from '~/components/Activity/Capability/DurationField'
+import { InputGroup, InputGroupInput, InputGroupText } from '~/components/ui/input-group'
 
 interface MagnitudeInputResolverProps {
-  id: string;
-  value: string;
-  onChange: (value: string) => void;
-  invalid: boolean;
-  unit: string;
-  capabilityName: string;
+  id: string
+  value: string
+  onChange: (value: string) => void
+  invalid: boolean
+  unit: string
+  capabilityName: string
 }
 
 export function MagnitudeInputResolver({
@@ -17,13 +17,13 @@ export function MagnitudeInputResolver({
   onChange,
   invalid,
   unit,
-  capabilityName
+  capabilityName,
 }: MagnitudeInputResolverProps) {
   if (capabilityName === 'pace') {
     return (
       <PaceField
         id={ id }
-        value={ value}
+        value={ value }
         onChange={ onChange }
         invalid={ invalid }
         unit={ unit }
@@ -35,7 +35,7 @@ export function MagnitudeInputResolver({
     return (
       <DurationField
         id={ id }
-        value={ value}
+        value={ value }
         onChange={ onChange }
         invalid={ invalid }
       />
@@ -45,17 +45,17 @@ export function MagnitudeInputResolver({
   return (
     <InputGroup>
       <InputGroupInput
-        id={id}
-        aria-invalid={invalid}
+        id={ id }
+        aria-invalid={ invalid }
         placeholder="0"
-        value={value ?? ''}
+        value={ value ?? '' }
         type="number"
-        onFocus={(e) => e.target.select()}
-        onChange={(e) => onChange(e.target.value)}
+        onFocus={ (e) => e.target.select() }
+        onChange={ (e) => onChange(e.target.value) }
       />
       <InputGroupText className="shrink-0 pr-4">
-        {unit}
+        { unit }
       </InputGroupText>
     </InputGroup>
-  );
+  )
 }

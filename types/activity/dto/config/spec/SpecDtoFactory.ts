@@ -1,9 +1,9 @@
 import { z } from 'zod'
-import { AvailableSpec } from "~/types/activity/spec/AvailableSpecs";
+import { AvailableSpec } from '~/types/activity/spec/AvailableSpecs'
 import {
   IndividualParticipantsSpecDtoSchema,
   TeamParticipantsSpecDtoSchema
-} from "~/types/activity/dto/config/spec/SpecDto";
+} from '~/types/activity/dto/config/spec/SpecDto'
 
 const specValidatorMap: Record<AvailableSpec, z.ZodTypeAny> = {
   individual_participants: IndividualParticipantsSpecDtoSchema,

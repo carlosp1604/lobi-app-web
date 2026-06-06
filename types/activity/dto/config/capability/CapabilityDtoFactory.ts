@@ -1,12 +1,12 @@
 import { z } from 'zod'
-import { AvailableCapability } from "~/types/activity/capabiliy/AvailableCapabilities";
+import { AvailableCapability } from '~/types/activity/capabiliy/AvailableCapabilities'
 import {
   LocationCapabilityDtoSchema,
   LocationRangeCapabilityDtoSchema,
   MagnitudeRangeCapabilityDtoSchema,
   MultipleChoiceCapabilityDtoSchema,
-  RouteCapabilityDtoSchema,
-} from "~/types/activity/dto/config/capability/CapabilityDto";
+  RouteCapabilityDtoSchema
+} from '~/types/activity/dto/config/capability/CapabilityDto'
 
 const capabilityValidatorMap: Record<AvailableCapability, z.ZodTypeAny> = {
   altitude: MagnitudeRangeCapabilityDtoSchema,

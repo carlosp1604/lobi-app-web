@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const LoginResponseSchema = z.object({
   accessToken: z.string().min(1),
@@ -12,6 +12,6 @@ export const LoginResponseSchema = z.object({
     username: z.string().min(1),
     imageUrl: z.url().nullable(),
   }),
-});
+})
 
-export type LoginResponseDto = z.infer<typeof LoginResponseSchema>;
+export type LoginResponseDto = z.infer<typeof LoginResponseSchema>

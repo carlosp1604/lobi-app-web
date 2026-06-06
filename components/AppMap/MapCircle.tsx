@@ -1,3 +1,5 @@
+'use client'
+
 import { useMap } from '@vis.gl/react-google-maps'
 import { useEffect, useRef } from 'react'
 
@@ -6,7 +8,7 @@ interface MapCircleProps {
   radiusInMeters: number
 }
 
-export function MapCircle({ center, radiusInMeters }: MapCircleProps) {
+export const MapCircle = ({ center, radiusInMeters }: MapCircleProps) => {
   const map = useMap()
   const circleRef = useRef<google.maps.Circle | null>(null)
 

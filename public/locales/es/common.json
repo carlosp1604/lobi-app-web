@@ -6,5 +6,6 @@
   "coordinates_lng_invalid_range_message_title": "Longitud debe ser un valor entre -180 y 180",
   "date_time_picker_time_title": "Hora: ",
   "information_modal_confirm_button_title": "Entendido",
-  "login_to_perform_operation_title": "Inicia sesión para realizar esta acción"
+  "login_to_perform_operation_title": "Inicia sesión para realizar esta acción",
+  "app_name_title": "LobiApp"
 }

@@ -1,12 +1,12 @@
-import { useContext } from "react";
-import { InfoModalContext } from "~/context/InformationModalProvider";
+import { use } from 'react'
+import { InfoModalContext } from '~/context/InformationModalProvider'
 
 export function useInformationModal() {
-  const context = useContext(InfoModalContext);
+  const context = use(InfoModalContext)
 
   if (context === undefined) {
-    throw new Error('useInformationModal() can only be used inside of <InformationModalProvider />');
+    throw new Error('useInformationModal() can only be used inside of <InformationModalProvider />')
   }
 
-  return context;
+  return context
 }

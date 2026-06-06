@@ -1,4 +1,4 @@
-import { ResetPassword } from "~/components/ResetPassword";
+import { ResetPassword } from '~/components/ResetPassword'
 
 export async function getServerSideProps() {
   return { props: {} }

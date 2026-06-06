@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { AVAILABLE_SPECS } from "~/types/activity/spec/AvailableSpecs";
+import { AVAILABLE_SPECS } from '~/types/activity/spec/AvailableSpecs'
 
 export const AllowedParticipantSpecSchema = z.enum(AVAILABLE_SPECS)
 
@@ -16,7 +16,7 @@ export const IndividualParticipantsSpecSchema = BaseParticipantsSpecSchemaDto.ex
   players: z.object({
     min: z.coerce.number().int().nonnegative(),
     max: z.coerce.number().int().nonnegative(),
-  })
+  }),
 })
 
 export const TeamParticipantsSpecSchema = BaseParticipantsSpecSchemaDto.extend({
@@ -30,13 +30,13 @@ export const TeamParticipantsSpecSchema = BaseParticipantsSpecSchemaDto.extend({
   teams: z.object({
     min: z.coerce.number().int().nonnegative(),
     max: z.coerce.number().int().nonnegative(),
-  })
+  }),
 })
 
 export const SpecSchema = z.union([
   IndividualParticipantsSpecSchema,
   TeamParticipantsSpecSchema,
-]);
+])
 
 export type IndividualParticipantsSpecSchemaDto = z.infer<typeof IndividualParticipantsSpecSchema>
 export type TeamParticipantsSpecSchemaDto = z.infer<typeof TeamParticipantsSpecSchema>

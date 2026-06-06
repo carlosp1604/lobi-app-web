@@ -3,8 +3,8 @@ import {
   GeographicCapabilitySchema,
   MultipleChoiceCapabilitySchema,
   RouteCapabilitySchema,
-  ScalarCapabilitySchema,
-} from "~/types/activity/dto/CapabilitySchemaDto";
+  ScalarCapabilitySchema
+} from '~/types/activity/dto/CapabilitySchemaDto'
 
 const capabilityValidatorMap: Record<string, z.ZodTypeAny> = {
   altitude: ScalarCapabilitySchema,

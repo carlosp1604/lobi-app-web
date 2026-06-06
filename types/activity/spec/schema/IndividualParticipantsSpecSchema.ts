@@ -1,10 +1,10 @@
-import { z } from "zod";
-import { Translate } from "next-translate";
-import { IndividualParticipantsSpecSchemaDto } from "~/types/activity/dto/SpecSchemaDto";
+import { z } from 'zod'
+import { Translate } from 'next-translate'
+import { IndividualParticipantsSpecSchemaDto } from '~/types/activity/dto/SpecSchemaDto'
 
 const IndividualParticipantsSchema = z.object({
   minPlayers: z.coerce.number().int(),
-  maxPlayers: z.coerce.number().int()
+  maxPlayers: z.coerce.number().int(),
 })
 
 export type IndividualParticipantsSpecDto = z.infer<typeof IndividualParticipantsSchema>
@@ -20,8 +20,8 @@ export const createIndividualParticipantsSpecSchema = (config: IndividualPartici
         path: ['minPlayers'],
         message: t('individual_participants_min_players_invalid_range_message_title', {
           min: configMinPlayers,
-          max: configMaxPlayers
-        })
+          max: configMaxPlayers,
+        }),
       })
     }
 
@@ -31,8 +31,8 @@ export const createIndividualParticipantsSpecSchema = (config: IndividualPartici
         path: ['maxPlayers'],
         message: t('individual_participants_max_players_invalid_range_message_title', {
           min: configMinPlayers,
-          max: configMaxPlayers
-        })
+          max: configMaxPlayers,
+        }),
       })
     }
 
@@ -40,7 +40,7 @@ export const createIndividualParticipantsSpecSchema = (config: IndividualPartici
       ctx.addIssue({
         code: 'custom',
         path: ['maxPlayers'],
-        message: t('individual_participants_invalid_max_players_message_title')
+        message: t('individual_participants_invalid_max_players_message_title'),
       })
     }
   })
@@ -49,23 +49,23 @@ export const createIndividualParticipantsSpecSchema = (config: IndividualPartici
 export const createIndividualParticipantsSpecDefaultValue = (config: IndividualParticipantsSpecSchemaDto) => {
   return {
     minPlayers: config.defaultMinPlayers,
-    maxPlayers: config.defaultMaxPlayers
-  };
+    maxPlayers: config.defaultMaxPlayers,
+  }
 }
 
 export const formatIndividualParticipantsSpecData = (data: IndividualParticipantsSpecDto,t: Translate): string => {
-  const { minPlayers, maxPlayers } = data;
+  const { minPlayers, maxPlayers } = data
 
   if (minPlayers === maxPlayers) {
-    return t('individual_participants_point_summary_title', { players: minPlayers });
+    return t('individual_participants_point_summary_title', { players: minPlayers })
   }
 
-  return t('individual_participants_range_summary_title', { minPlayers, maxPlayers });
+  return t('individual_participants_range_summary_title', { minPlayers, maxPlayers })
 }
 
 export const buildIndividualParticipantsSpecPayload = (data: IndividualParticipantsSpecDto) => {
   return {
     minPlayers: data.minPlayers,
     maxPlayers: data.maxPlayers,
-  };
-};
+  }
+}

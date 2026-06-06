@@ -1,24 +1,24 @@
-import {useState} from "react";
-import { VerifyEmailForm } from "~/components/Forms/VerifyEmailForm";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "~/components/ui/card";
-import {ValidateTokenForm} from "~/components/Forms/ValidateTokenForm";
-import useTranslation from "next-translate/useTranslation";
-import {Button} from "~/components/ui/button";
-import {ArrowLeft, CheckCircle2} from "lucide-react";
-import ResetPasswordForm from "~/components/Forms/ResetPasswordForm";
-import {Result} from "~/types/Result";
+import Link from 'next/link'
+import useTranslation from 'next-translate/useTranslation'
+import { Button } from '~/components/ui/button'
+import { Result } from '~/types/Result'
+import { useAuth } from '~/hooks/useAuth'
+import { useState } from 'react'
+import { AppServiceError } from '~/types/AppServiceError'
+import { VerifyEmailForm } from '~/components/Forms/VerifyEmailForm'
+import { ResetPasswordForm } from '~/components/Forms/ResetPasswordForm'
+import { ValidateTokenForm } from '~/components/Forms/ValidateTokenForm'
+import { ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
 import {
   AUTH_RESET_PASSWORD_INVALID_TOKEN,
   AUTH_RESET_PASSWORD_TOKEN_ALREADY_EXPIRED,
-  AUTH_RESET_PASSWORD_TOKEN_ALREADY_USED,
-} from "~/types/auth/ApiCodes";
-import {AppServiceError} from "~/types/AppServiceError";
-import {useAuth} from "~/hooks/useAuth";
-import Link from "next/link";
+  AUTH_RESET_PASSWORD_TOKEN_ALREADY_USED
+} from '~/types/auth/ApiCodes'
 
 type ResetPasswordStep = 'verify-email' | 'validate-token' | 'reset' | 'confirm'
 
-type StepData = {
+interface StepData {
   step: number
   descriptionKey: string
   previous: ResetPasswordStep | null
@@ -31,37 +31,37 @@ const ResetPasswordStepData : Record<Extract<ResetPasswordStep, 'verify-email' |
     step: 1,
     descriptionKey: 'reset_password_verify_email_step_description',
     previous: null,
-    next: 'validate-token'
+    next: 'validate-token',
   },
   'validate-token': {
     step: 2,
     descriptionKey: 'reset_password_validate_token_step_description',
     previous: 'verify-email',
-    next: 'reset'
+    next: 'reset',
   },
   'reset': {
     step: 3,
     descriptionKey: 'reset_password_reset_password_step_description',
     previous: 'validate-token',
     next: null,
-  }
+  },
 }
 
 export function ResetPassword() {
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation('auth')
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [step, setStep] = useState<ResetPasswordStep>('verify-email')
   const [email, setEmail] = useState<string>('')
   const [verificationToken, setVerificationToken] = useState<string>('')
 
-  const { status, user, setLoginOpen } = useAuth();
-  const isAuthenticated = status === 'authenticated' && user;
+  const { status, user, setLoginOpen } = useAuth()
+  const isAuthenticated = status === 'authenticated' && user
 
   const onSendEmailComplete = (result: Result<string, AppServiceError>): void => {
     if (result.success) {
-      setEmail(result.value);
-      setStep('validate-token');
+      setEmail(result.value)
+      setStep('validate-token')
 
     }
   }
@@ -76,7 +76,7 @@ export function ResetPassword() {
       setVerificationToken(result.value)
       setStep('reset')
 
-      return;
+      return
     }
 
     /**
@@ -102,21 +102,21 @@ export function ResetPassword() {
       setVerificationToken('')
       setStep('confirm')
 
-      return;
+      return
     }
 
-    const error = result.error;
+    const error = result.error
 
     const fatalTokenErrors = [
       AUTH_RESET_PASSWORD_TOKEN_ALREADY_EXPIRED,
       AUTH_RESET_PASSWORD_TOKEN_ALREADY_USED,
       AUTH_RESET_PASSWORD_INVALID_TOKEN,
-    ];
+    ]
 
     if (error.isApiErrorType(fatalTokenErrors)) {
-      setEmail('');
-      setVerificationToken('');
-      setStep('verify-email');
+      setEmail('')
+      setVerificationToken('')
+      setStep('verify-email')
     }
   }
 
@@ -126,10 +126,10 @@ export function ResetPassword() {
     content = (
       <VerifyEmailForm
         mode="reset"
-        loading={loading}
-        onLoadingChange={(loading) => setLoading(loading)}
-        onActionComplete={onSendEmailComplete}
-        onAlreadyHasCode={onAlreadyHasCode}
+        loading={ loading }
+        onLoadingChange={ (loading) => setLoading(loading) }
+        onActionComplete={ onSendEmailComplete }
+        onAlreadyHasCode={ onAlreadyHasCode }
       />
     )
   }
@@ -138,10 +138,10 @@ export function ResetPassword() {
     content = (
       <ValidateTokenForm
         mode="reset"
-        email={email}
-        onLoadingChange={(loading) => setLoading(loading)}
-        loading={loading}
-        onActionComplete={onTokenValidationComplete}
+        email={ email }
+        onLoadingChange={ (loading) => setLoading(loading) }
+        loading={ loading }
+        onActionComplete={ onTokenValidationComplete }
       />
     )
   }
@@ -149,11 +149,11 @@ export function ResetPassword() {
   if (step === 'reset') {
     content = (
       <ResetPasswordForm
-        email={email}
-        verificationToken={verificationToken}
-        loading={loading}
-        onLoadingChange={(loading) => setLoading(loading)}
-        onActionComplete={onResetPasswordComplete}
+        email={ email }
+        verificationToken={ verificationToken }
+        loading={ loading }
+        onLoadingChange={ (loading) => setLoading(loading) }
+        onActionComplete={ onResetPasswordComplete }
       />
     )
   }
@@ -168,28 +168,28 @@ export function ResetPassword() {
                 <CheckCircle2 className="h-8 w-8 text-green-600" />
               </div>
               <CardTitle>
-                {t('reset_password_confirm_step_title')}
+                { t('reset_password_confirm_step_title') }
               </CardTitle>
               <CardDescription className="mt-2">
-                {t('reset_password_confirm_step_description')}
+                { t('reset_password_confirm_step_description') }
               </CardDescription>
             </CardHeader>
 
             <CardContent className="flex flex-col gap-2 pt-2">
-              <Button className="w-full cursor-pointer" asChild>
+              <Button className="w-full" asChild>
                 <Link href="/">
-                  {t('reset_password_confirm_step_home_button_title')}
+                  { t('reset_password_confirm_step_home_button_title') }
                 </Link>
               </Button>
               {
                 isAuthenticated ? (
-                  <Button variant="outline" className="w-full cursor-pointer" asChild>
-                    <Link href={`/users/${user.username}/`}>
+                  <Button variant="outline" className="w-full" asChild>
+                    <Link href={ `/users/${user.username}/` }>
                       { t('reset_password_confirm_step_profile_button_title') }
                     </Link>
                   </Button>
                 ) : (
-                  <Button variant="outline" className="w-full cursor-pointer" onClick={() => setLoginOpen(true)}>
+                  <Button variant="outline" className="w-full" onClick={ () => setLoginOpen(true) }>
                     { t('reset_password_confirm_step_login_button_title') }
                   </Button>
                 )
@@ -198,7 +198,7 @@ export function ResetPassword() {
           </Card>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -207,42 +207,43 @@ export function ResetPassword() {
         <Card>
           <CardHeader>
             <CardTitle className="flex flex-row items-center gap-x-2 min-h-[40px]">
-              {step !== 'verify-email' && (
+              { step !== 'verify-email' && (
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-transparent transition-colors cursor-pointer -ml-2"
-                  onClick={() => {
-                    const prev = ResetPasswordStepData[step].previous;
+                  className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-transparent transition-colors -ml-2"
+                  onClick={ () => {
+                    const prev = ResetPasswordStepData[step].previous
+
                     if (prev) {
-                      setStep(prev);
+                      setStep(prev)
                     }
-                  }}
+                  } }
                 >
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
-              )}
-              <span>{t('reset_password_header_title')}</span>
+              ) }
+              <span>{ t('reset_password_header_title') }</span>
             </CardTitle>
 
             <CardDescription className="whitespace-pre-line">
-              {t(ResetPasswordStepData[step].descriptionKey)}
+              { t(ResetPasswordStepData[step].descriptionKey) }
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {content}
+            { content }
           </CardContent>
           <CardFooter className="flex justify-end py-2 px-6 border-t bg-muted/30 rounded-b-lg">
-          <span className="text-xs text-muted-foreground font-medium">
-            {t('reset_password_step_n_of_total_title', {
-              step: ResetPasswordStepData[step].step,
-              totalSteps: TotalSteps
-            })}
-          </span>
+            <span className="text-xs text-muted-foreground font-medium">
+              { t('reset_password_step_n_of_total_title', {
+                step: ResetPasswordStepData[step].step,
+                totalSteps: TotalSteps,
+              }) }
+            </span>
           </CardFooter>
         </Card>
       </div>
     </div>
-  );
+  )
 }

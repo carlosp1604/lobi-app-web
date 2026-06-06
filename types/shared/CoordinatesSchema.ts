@@ -1,7 +1,7 @@
-import Big from "big.js";
-import { z } from "zod";
-import { Translate } from "next-translate";
-import { DecimalStringSchema } from "~/types/shared/DecimalStringSchema";
+import Big from 'big.js'
+import { z } from 'zod'
+import { Translate } from 'next-translate'
+import { DecimalStringSchema } from '~/types/shared/DecimalStringSchema'
 
 export const createCoordinateSchema = (t: Translate) => {
   return z.object({
@@ -19,7 +19,7 @@ export const createCoordinateSchema = (t: Translate) => {
       ctx.addIssue({
         code: 'custom',
         path: ['lat'],
-        message: t('common:coordinates_lat_invalid_range_message_title')
+        message: t('common:coordinates_lat_invalid_range_message_title'),
       })
     }
 
@@ -27,7 +27,7 @@ export const createCoordinateSchema = (t: Translate) => {
       ctx.addIssue({
         code: 'custom',
         path: ['lng'],
-        message: t('common:coordinates_lng_invalid_range_message_title')
+        message: t('common:coordinates_lng_invalid_range_message_title'),
       })
     }
   })

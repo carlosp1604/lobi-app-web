@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from 'zod'
 
 export const RefreshResponseSchema = z.object({
   accessToken: z.string().min(1),
@@ -12,6 +12,6 @@ export const RefreshResponseSchema = z.object({
     username: z.string().min(1),
     imageUrl: z.url().nullable(),
   }),
-});
+})
 
-export type RefreshResponseDto = z.infer<typeof RefreshResponseSchema>;
+export type RefreshResponseDto = z.infer<typeof RefreshResponseSchema>

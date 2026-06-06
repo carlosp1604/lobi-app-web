@@ -1,17 +1,16 @@
 import * as React from "react"
 import { Command as CommandPrimitive } from "cmdk"
-
 import { cn } from "~/lib/utils"
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from "~/components/ui/dialog"
 import {
   InputGroup,
-  InputGroupAddon,
+  InputGroupAddon
 } from "~/components/ui/input-group"
 import { SearchIcon, CheckIcon } from "lucide-react"
 
@@ -189,5 +188,5 @@ export {
   CommandGroup,
   CommandItem,
   CommandShortcut,
-  CommandSeparator,
+  CommandSeparator
 }

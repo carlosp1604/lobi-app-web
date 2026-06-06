@@ -2,7 +2,7 @@ import { z } from 'zod'
 import {
   IndividualParticipantsSpecSchema,
   TeamParticipantsSpecSchema
-} from "~/types/activity/dto/SpecSchemaDto";
+} from '~/types/activity/dto/SpecSchemaDto'
 
 const specValidatorMap: Record<string, z.ZodTypeAny> = {
   individual_participants: IndividualParticipantsSpecSchema,

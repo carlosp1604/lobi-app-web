@@ -1,45 +1,45 @@
-import { z } from 'zod';
-import {ApiErrorSchema} from '~/types/ApiError.schema';
-import { fail, Result, success } from '~/types/Result';
-import { AxiosInstance, AxiosRequestConfig, isAxiosError, AxiosResponse } from 'axios';
+import { z } from 'zod'
+import { ApiErrorSchema } from '~/types/ApiError.schema'
+import { fail, Result, success } from '~/types/Result'
+import { AxiosInstance, AxiosRequestConfig, isAxiosError, AxiosResponse } from 'axios'
 
-type SUPPORTED_METHODS = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+type SupportedMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
-const ERR_UNKNOWN_CLIENT_CRASH = 'ERR_UNKNOWN_CLIENT_CRASH' as const;
-const UNKNOWN_ERROR_NETWORK = 'UNKNOWN_ERROR_NETWORK' as const;
+const ERR_UNKNOWN_CLIENT_CRASH = 'ERR_UNKNOWN_CLIENT_CRASH' as const
+const UNKNOWN_ERROR_NETWORK = 'UNKNOWN_ERROR_NETWORK' as const
 
-const RESPONSE_FORMAT_VALIDATION_ERROR = 'RESPONSE_FORMAT_VALIDATION_ERROR' as const;
-const ERROR_FORMAT_VALIDATION_ERROR = 'ERROR_FORMAT_VALIDATION_ERROR' as const;
-const ERROR_RESPONSE_FORMAT_VALIDATION_ERROR = 'ERROR_RESPONSE_FORMAT_VALIDATION_ERROR' as const;
+const RESPONSE_FORMAT_VALIDATION_ERROR = 'RESPONSE_FORMAT_VALIDATION_ERROR' as const
+const ERROR_FORMAT_VALIDATION_ERROR = 'ERROR_FORMAT_VALIDATION_ERROR' as const
+const ERROR_RESPONSE_FORMAT_VALIDATION_ERROR = 'ERROR_RESPONSE_FORMAT_VALIDATION_ERROR' as const
 
 export type ApiClientErrorEnvelope =
   | {
-  readonly type: 'api';
-  readonly statusCode: number;
-  readonly timestamp?: string;
-  readonly requestId: string;
-  readonly path: string;
-  readonly method: SUPPORTED_METHODS;
-  readonly response: unknown;
-}
+    readonly type: 'api'
+    readonly statusCode: number
+    readonly timestamp?: string
+    readonly requestId: string
+    readonly path: string
+    readonly method: SupportedMethods
+    readonly response: unknown
+  }
   | {
-  readonly type: 'network';
-  readonly code: string;
-  readonly path: string;
-  readonly method: SUPPORTED_METHODS;
-  readonly error: unknown;
-}
+    readonly type: 'network'
+    readonly code: string
+    readonly path: string
+    readonly method: SupportedMethods
+    readonly error: unknown
+  }
   | {
-  readonly type: 'validation';
-  readonly code: string
-  readonly statusCode: number;
-  readonly timestamp?: string;
-  readonly requestId: string;
-  readonly path: string;
-  readonly method: SUPPORTED_METHODS;
-  readonly response: unknown;
-  readonly error: z.ZodError;
-};
+    readonly type: 'validation'
+    readonly code: string
+    readonly statusCode: number
+    readonly timestamp?: string
+    readonly requestId: string
+    readonly path: string
+    readonly method: SupportedMethods
+    readonly response: unknown
+    readonly error: z.ZodError
+  }
 
 export class ApiClient {
   constructor(private readonly api: AxiosInstance) {}
@@ -51,19 +51,19 @@ export class ApiClient {
     config?: AxiosRequestConfig
   ): Promise<Result<T, ApiClientErrorEnvelope>> {
     try {
-      const response = await this.api.get<unknown>(url, config);
+      const response = await this.api.get<unknown>(url, config)
 
-      const rawData = response.data;
+      const rawData = response.data
 
-      const validation = dataSchema.safeParse(rawData);
+      const validation = dataSchema.safeParse(rawData)
 
       if (!validation.success) {
-        return fail(this.buildResponseValidationError(response, url, 'GET', validation.error));
+        return fail(this.buildResponseValidationError(response, url, 'GET', validation.error))
       }
 
-      return success(validation.data);
+      return success(validation.data)
     } catch (error: unknown) {
-      return fail(this.buildResponseError(error, url, 'GET', errorSchema));
+      return fail(this.buildResponseError(error, url, 'GET', errorSchema))
     }
   }
 
@@ -76,42 +76,42 @@ export class ApiClient {
     config?: AxiosRequestConfig
   ): Promise<Result<T, ApiClientErrorEnvelope>> {
     try {
-      const response = await this.api.post<unknown>(url, payload, config);
-      const rawData = response.data;
+      const response = await this.api.post<unknown>(url, payload, config)
+      const rawData = response.data
 
-      const validation = schema.safeParse(rawData);
+      const validation = schema.safeParse(rawData)
 
       if (!validation.success) {
-        return fail(this.buildResponseValidationError(response, url, 'POST', validation.error));
+        return fail(this.buildResponseValidationError(response, url, 'POST', validation.error))
       }
 
-      return success(validation.data);
+      return success(validation.data)
     } catch (error: unknown) {
-      return fail(this.buildResponseError(error, url, 'POST', errorSchema));
+      return fail(this.buildResponseError(error, url, 'POST', errorSchema))
     }
   }
 
   async delete(
     url: string,
     errorSchema: z.ZodSchema,
-    config?: AxiosRequestConfig,
+    config?: AxiosRequestConfig
   ): Promise<Result<void, ApiClientErrorEnvelope>> {
     try {
-      await this.api.delete<unknown>(url, config);
+      await this.api.delete<unknown>(url, config)
 
-      return success(undefined);
+      return success(undefined)
     } catch (error: unknown) {
-      return fail(this.buildResponseError(error, url, 'DELETE', errorSchema));
+      return fail(this.buildResponseError(error, url, 'DELETE', errorSchema))
     }
   }
 
   private buildResponseValidationError(
     response: AxiosResponse<unknown>,
     url: string,
-    method: SUPPORTED_METHODS,
+    method: SupportedMethods,
     error: z.ZodError
   ): ApiClientErrorEnvelope {
-    const rawData = response.data;
+    const rawData = response.data
 
     return {
       type: 'validation',
@@ -122,14 +122,14 @@ export class ApiClient {
       method,
       response: rawData,
       error,
-    };
+    }
   }
 
   private buildResponseError (
     error: unknown,
     url: string,
-    method: SUPPORTED_METHODS,
-    schema: z.ZodSchema,
+    method: SupportedMethods,
+    schema: z.ZodSchema
   ): ApiClientErrorEnvelope {
     if (!isAxiosError(error)) {
       return {
@@ -138,17 +138,18 @@ export class ApiClient {
         path: url,
         method,
         error,
-      };
+      }
     }
 
-    const axiosError = error;
+    const axiosError = error
 
     if (axiosError.response) {
-      const serverData = axiosError.response.data;
+      const serverData = axiosError.response.data
 
       const errorValidation = ApiErrorSchema.safeParse(serverData)
+
       if (errorValidation.success) {
-        const responseValidation = schema.safeParse(serverData.response);
+        const responseValidation = schema.safeParse(serverData.response)
 
         if (!responseValidation.success) {
           return {
@@ -171,8 +172,8 @@ export class ApiClient {
           requestId: serverData.requestId,
           path: serverData.path,
           method,
-          response: serverData.response
-        };
+          response: serverData.response,
+        }
       }
 
       return {
@@ -193,6 +194,6 @@ export class ApiClient {
       path: url,
       method,
       error,
-    };
+    }
   }
 }

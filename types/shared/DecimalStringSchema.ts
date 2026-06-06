@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from 'zod'
 import Big from 'big.js'
 
 export const DecimalStringSchema = z.string().refine(
@@ -9,6 +9,7 @@ export const DecimalStringSchema = z.string().refine(
 
     try {
       new Big(val)
+
       return true
     } catch {
       return false

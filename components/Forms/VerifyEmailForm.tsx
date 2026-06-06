@@ -1,118 +1,123 @@
-import * as z from 'zod';
-import useTranslation from "next-translate/useTranslation";
-import { Button } from '~/components/ui/button';
-import { Loader2 } from 'lucide-react';
-import { FieldGroup } from '~/components/ui/field';
-import { EmailInput } from "~/components/Forms/Input/EmailInput";
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { AUTH_VERIFY_EMAIL_EMAIL_ALREADY_TAKEN, AUTH_VERIFY_EMAIL_TOKEN_ALREADY_ISSUED } from "~/types/auth/ApiCodes";
-import { AuthService } from "~/services/auth/AuthService";
-import { toast } from "sonner";
-import {Result, success} from "~/types/Result";
-import {AppServiceError} from "~/types/AppServiceError";
+'use client'
+
+import * as z from 'zod'
+import useTranslation from 'next-translate/useTranslation'
+import { toast } from 'sonner'
+import { Button } from '~/components/ui/button'
+import { Loader2 } from 'lucide-react'
+import { FieldGroup } from '~/components/ui/field'
+import { EmailInput } from '~/components/Forms/Input/EmailInput'
+import { AuthService } from '~/services/auth/AuthService'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { AppServiceError } from '~/types/AppServiceError'
+import { Result, success } from '~/types/Result'
+import { useState, useEffect } from 'react'
+import { useForm, Controller } from 'react-hook-form'
+import { AUTH_VERIFY_EMAIL_EMAIL_ALREADY_TAKEN, AUTH_VERIFY_EMAIL_TOKEN_ALREADY_ISSUED } from '~/types/auth/ApiCodes'
 
 interface VerifyEmailFormProps {
-  mode: 'signup' | 'reset';
-  loading: boolean;
-  onLoadingChange: (loading: boolean) => void;
-  onActionComplete?: (result: Result<string, AppServiceError>) => void;
-  onAlreadyHasCode: (email: string) => void;
+  mode: 'signup' | 'reset'
+  loading: boolean
+  onLoadingChange: (loading: boolean) => void
+  onActionComplete?: (result: Result<string, AppServiceError>) => void
+  onAlreadyHasCode: (email: string) => void
 }
 
-export function VerifyEmailForm({mode, loading, onLoadingChange, onActionComplete, onAlreadyHasCode }: VerifyEmailFormProps) {
-  const { t } = useTranslation('auth');
+export const VerifyEmailForm = ({ mode, loading, onLoadingChange, onActionComplete, onAlreadyHasCode }: VerifyEmailFormProps) => {
+  const { t } = useTranslation('auth')
 
-  const [showResend, setShowResend] = useState(false);
+  const [showResend, setShowResend] = useState(false)
 
   const verifyEmailSchema = z.object({
     email: z.email({ message: t('email_input_error_message') }),
-  });
+  })
 
-  type VerifyEmailFormValues = z.infer<typeof verifyEmailSchema>;
+  type VerifyEmailFormValues = z.infer<typeof verifyEmailSchema>
 
   const form = useForm({
     resolver: zodResolver(verifyEmailSchema),
     defaultValues: { email: '' },
     mode: 'onChange',
-  });
+  })
 
-  const { isValid } = form.formState;
+  const { isValid } = form.formState
 
-  const emailValue = form.watch('email');
+  const emailValue = form.watch('email')
 
   useEffect(() => {
     if (showResend) {
-      setShowResend(false);
+      // eslint-disable-next-line @eslint-react/set-state-in-effect
+      setShowResend(false)
     }
-  }, [emailValue]);
+  // eslint-disable-next-line @eslint-react/exhaustive-deps
+  }, [emailValue])
 
   async function onSubmit(data: VerifyEmailFormValues, isResendAction = false) {
-    onLoadingChange(true);
+    onLoadingChange(true)
 
-    const authService = new AuthService();
+    const authService = new AuthService()
     let result
 
-    const shouldForceResend = isResendAction || showResend;
+    const shouldForceResend = isResendAction || showResend
 
     if (mode === 'signup') {
-      result = await authService.verifyEmailSignup(data.email, shouldForceResend);
+      result = await authService.verifyEmailSignup(data.email, shouldForceResend)
     } else {
-      result = await authService.verifyEmailReset(data.email, shouldForceResend);
+      result = await authService.verifyEmailReset(data.email, shouldForceResend)
     }
 
-    onLoadingChange(false);
+    onLoadingChange(false)
 
     if (!result.success) {
-      const error = result.error;
+      const error = result.error
 
       if (error.isApiErrorType(AUTH_VERIFY_EMAIL_TOKEN_ALREADY_ISSUED)) {
-        form.setError('email', {type: 'server', message: t(error.getTranslationKey())});
-        setShowResend(true);
+        form.setError('email', { type: 'server', message: t(error.getTranslationKey()) })
+        setShowResend(true)
 
-        toast.warning(t(error.getTranslationKey()));
+        toast.warning(t(error.getTranslationKey()))
       } else if (error.isApiErrorType(AUTH_VERIFY_EMAIL_EMAIL_ALREADY_TAKEN)) {
-        form.setError('email', {type: 'server', message: t(error.getTranslationKey())});
-        toast.warning(t(error.getTranslationKey()));
+        form.setError('email', { type: 'server', message: t(error.getTranslationKey()) })
+        toast.warning(t(error.getTranslationKey()))
       } else {
-        toast.error(t(error.getTranslationKey()));
+        toast.error(t(error.getTranslationKey()))
       }
 
       if (onActionComplete) {
-        onActionComplete(result);
+        onActionComplete(result)
       }
-      return;
+
+      return
     } else {
       if (shouldForceResend) {
-        toast.success(t('verify_email_token_resent_success_title'));
+        toast.success(t('verify_email_token_resent_success_title'))
       }
     }
 
     if (onActionComplete) {
-      onActionComplete(success(data.email));
+      onActionComplete(success(data.email))
     }
   }
 
   return (
     <form
       id="verify-email-form"
-      onSubmit={form.handleSubmit((data) => onSubmit(data, false))}
+      onSubmit={ form.handleSubmit((data) => onSubmit(data, false)) }
       className="space-y-2"
     >
       <FieldGroup className="flex flex-col">
         <Controller
           name="email"
-          control={form.control}
-          render={({field, fieldState}) => (
+          control={ form.control }
+          render={ ({ field, fieldState }) => (
             <EmailInput
-              label={t('email_label_title')}
-              placeholder={t('email_input_placeholder')}
-              field={field}
-              fieldState={fieldState}
-              disabled={loading}
+              label={ t('email_label_title') }
+              placeholder={ t('email_input_placeholder') }
+              field={ field }
+              fieldState={ fieldState }
+              disabled={ loading }
             />
-          )}
+          ) }
         />
       </FieldGroup>
       <div className="flex flex-col gap-y-1 w-full">
@@ -120,35 +125,35 @@ export function VerifyEmailForm({mode, loading, onLoadingChange, onActionComplet
           variant="link"
           type="button"
           size="icon-xs"
-          disabled={!showResend || loading}
-          className={`w-full text-center cursor-pointer transition-all duration-200 ${
+          disabled={ !showResend || loading }
+          className={ `w-full text-center transition-all duration-200 ${
             showResend
-              ? "opacity-100 visible"
-              : "opacity-0 invisible pointer-events-none"
-          }`}
-          onClick={() => form.handleSubmit((data) => onSubmit(data, true))()}
+              ? 'opacity-100 visible'
+              : 'opacity-0 invisible pointer-events-none'
+          }` }
+          onClick={ () => form.handleSubmit((data) => onSubmit(data, true))() }
         >
-          {t('verify_email_resend_token_button_title')}
+          { t('verify_email_resend_token_button_title') }
         </Button>
         <Button
           type="submit"
           form="verify-email-form"
-          className="w-full cursor-pointer"
-          disabled={showResend || loading || !isValid}
+          className="w-full"
+          disabled={ showResend || loading || !isValid }
         >
-          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>}
-          {!loading && t('verify_email_submit_button_title')}
+          { loading && <Loader2 className="mr-2 h-4 w-4 animate-spin"/> }
+          { !loading && t('verify_email_submit_button_title') }
         </Button>
         <Button
           variant="link"
           type="button"
-          disabled={(!isValid || loading) && !showResend}
-          className="w-full text-center cursor-pointer"
-          onClick={() => onAlreadyHasCode(form.getValues('email'))}
+          disabled={ (!isValid || loading) && !showResend }
+          className="w-full text-center"
+          onClick={ () => onAlreadyHasCode(form.getValues('email')) }
         >
-          {t('verify_email_already_has_token_title')}
+          { t('verify_email_already_has_token_title') }
         </Button>
       </div>
     </form>
-  );
+  )
 }

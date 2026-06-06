@@ -1,21 +1,21 @@
 import nextTranslate from 'next-translate-plugin'
-import type { NextConfig } from "next";
-import { withSentryConfig } from "@sentry/nextjs";
+import type { NextConfig } from 'next'
+import { withSentryConfig } from '@sentry/nextjs'
 
 const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
-};
+}
 
-const nextWithTranslations = nextTranslate(nextConfig, {turbopack: true});
+const nextWithTranslations = nextTranslate(nextConfig, { turbopack: true })
 
 export default withSentryConfig(nextWithTranslations, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
-  org: "lobi",
+  org: 'lobi',
 
-  project: "javascript-nextjs",
+  project: 'javascript-nextjs',
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
@@ -30,7 +30,7 @@ export default withSentryConfig(nextWithTranslations, {
   // This can increase your server load as well as your hosting bill.
   // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
   // side errors will fail.
-  tunnelRoute: "/monitoring",
+  tunnelRoute: '/monitoring',
 
   webpack: {
     // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
@@ -45,4 +45,4 @@ export default withSentryConfig(nextWithTranslations, {
       removeDebugLogging: true,
     },
   },
-});
+})
