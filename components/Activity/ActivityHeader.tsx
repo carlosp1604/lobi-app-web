@@ -31,8 +31,8 @@ export interface ActivityHeaderProps {
   isHost: boolean
   isParticipant: boolean
   onJoin: () => Promise<void>
-  onCancel: () => Promise<void>
-  onLeave: () => Promise<void>
+  onCancel: () => void
+  onLeave: () => void
   loading: boolean
 }
 

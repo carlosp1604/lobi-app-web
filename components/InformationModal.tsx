@@ -16,6 +16,8 @@ export interface InfoModalProps {
   title: string
   description: string
   level?: 'info' | 'warning' | 'error'
+  onConfirm: () => void
+  onCancel?: () => void
 }
 
 const iconMap = {
@@ -30,6 +32,8 @@ export const InformationModal = ({
   title,
   description,
   level = 'info',
+  onConfirm,
+  onCancel,
 }: InfoModalProps) => {
   const { t } = useTranslation()
 
@@ -41,16 +45,28 @@ export const InformationModal = ({
             { iconMap[level] }
           </div>
           <div className="space-y-1.5 text-center sm:text-left">
-            <DialogTitle className="text-lg">{ title }</DialogTitle>
+            <DialogTitle className="text-lg">
+              { title }
+            </DialogTitle>
             <DialogDescription className="text-sm text-muted-foreground whitespace-pre-wrap">
               { description }
             </DialogDescription>
           </div>
         </DialogHeader>
-        <DialogFooter className="sm:justify-end mt-2">
+        <DialogFooter className="sm:justify-end mt-2 gap-1 md:gap-2">
+          { onCancel && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={ onCancel }
+            >
+              { t('common:information_modal_cancel_button_title') }
+            </Button>
+          ) }
           <Button
             type="button"
-            onClick={ () => onOpenChange(false) }
+            onClick={ onConfirm }
+            variant={ level === 'error' ? 'destructive' : 'default' }
           >
             { t('common:information_modal_confirm_button_title') }
           </Button>

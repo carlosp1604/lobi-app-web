@@ -244,6 +244,10 @@
   "activity_details_leave_error_title_message": "Error al darse de baja de la actividad",
   "activity_details_successful_cancelled_title_message": "La actividad fue cancelada correctamente",
   "activity_details_cancel_error_title_message": "Error al cancelar la actividad",
+  "activity_details_leave_activity_confirm_modal_title": "¿Abandonar la actividad?",
+  "activity_details_leave_activity_confirm_modal_description": "Estás a punto de darte de baja de esta actividad y perderás tu plaza. ¿Estás seguro de que deseas continuar?",
+  "activity_details_cancel_activity_confirm_modal_title": "¿Cancelar la actividad?",
+  "activity_details_cancel_activity_confirm_modal_description": "Esta acción cancelará la actividad de forma permanente y no podrá ser deshecha. ¿Estás seguro de que deseas continuar?",
 
   "activities_search_bar_location_map_title": "Ubicación y radio de búsqueda",
   "activities_search_bar_location_placeholder_title": "Selecciona en el mapa",

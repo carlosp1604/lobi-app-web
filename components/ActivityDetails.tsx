@@ -54,7 +54,7 @@ export const ActivityDetails = ({ activityData }: ActivityDetailsProps) => {
   const router = useRouter()
   const { status, user, setLoginOpen } = useAuth()
   const { t } = useTranslation('activities')
-  const { showModal } = useInformationModal()
+  const { showModal, closeModal } = useInformationModal()
 
   const prevAuthStatusRef = useRef(status)
 
@@ -226,8 +226,24 @@ export const ActivityDetails = ({ activityData }: ActivityDetailsProps) => {
         isHost={ isHost }
         isParticipant={ isParticipant }
         onJoin={ onJoin }
-        onLeave={ onLeave }
-        onCancel={ onCancel }
+        onLeave={ () => {
+          showModal({
+            title: t('activity_details_leave_activity_confirm_modal_title'),
+            description: t('activity_details_leave_activity_confirm_modal_description'),
+            level: 'info',
+            onConfirm: async () => await  onLeave(),
+            onCancel: closeModal,
+          })
+        } }
+        onCancel={ () => {
+          showModal({
+            title: t('activity_details_cancel_activity_confirm_modal_title'),
+            description: t('activity_details_cancel_activity_confirm_modal_description'),
+            level: 'info',
+            onConfirm: async () => await onCancel(),
+            onCancel: closeModal,
+          })
+        } }
         loading={ loading }
       />
 
