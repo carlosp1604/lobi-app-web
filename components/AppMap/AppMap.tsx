@@ -99,26 +99,37 @@ export default function AppMap({
           onLocationChange(newLocation)
         } }/>
         {
-          onRadiusChange &&
-          <Field className="w-full">
-            <FieldLabel htmlFor="map-radius-slider-id">
-              { t('map_radius_label_title') }
-            </FieldLabel>
-            <Slider
-              id="map-radius-slider-id"
-              defaultValue={ [radius] }
-              min={ 0.2 }
-              max={ 100 }
-              step={ 0.2 }
-              className="w-full"
-              onValueChange={ (value) => {
-                const newRadius = value[0]
+          onRadiusChange && (
+            <Field className="w-full">
+              <div className="flex items-center justify-between mb-2">
+                <FieldLabel htmlFor="map-radius-slider-id" className="mb-0">
+                  { t('map_radius_label_title') }
+                </FieldLabel>
 
-                setRadius(newRadius)
-                onRadiusChange(newRadius)
-              } }
-            />
-          </Field>
+                <span className="text-sm font-medium text-muted-foreground">
+                  { radius * RadiusConversionFactor < 1000
+                    ? t('map_radius_value_meters_title', { value: radius * RadiusConversionFactor })
+                    : t('map_radius_value_kilometers_title', { value: (radius * RadiusConversionFactor) / 1000 })
+                  }
+                </span>
+              </div>
+
+              <Slider
+                id="map-radius-slider-id"
+                defaultValue={ [radius] }
+                min={ 0.2 }
+                max={ 100 }
+                step={ 0.2 }
+                className="w-full"
+                onValueChange={ (value) => {
+                  const newRadius = value[0]
+
+                  setRadius(newRadius)
+                  onRadiusChange(newRadius)
+                } }
+              />
+            </Field>
+          )
         }
         <div className="w-full h-full flex relative rounded-md">
           { loading && (

@@ -2,7 +2,6 @@
 
 import * as z from 'zod'
 import useTranslation from 'next-translate/useTranslation'
-import { toast } from 'sonner'
 import { Button } from '~/components/ui/button'
 import { Result } from '~/types/Result'
 import { Loader2 } from 'lucide-react'
@@ -13,6 +12,7 @@ import { PasswordRegex } from '~/helpers/input.helper'
 import { AppServiceError } from '~/types/AppServiceError'
 import { PasswordInputField } from '~/components/Forms/Input/PasswordInput'
 import { Controller, useForm } from 'react-hook-form'
+import { useInformationModal } from '~/hooks/useInformationModal'
 import {
   AUTH_RESET_PASSWORD_SAME_PASSWORD
 } from '~/types/auth/ApiCodes'
@@ -53,6 +53,8 @@ export const ResetPasswordForm = ({
     mode: 'onChange',
   })
 
+  const { showModal } = useInformationModal()
+
   const { isValid, errors } = form.formState
 
   const passwordValue = form.watch('password')
@@ -74,7 +76,11 @@ export const ResetPasswordForm = ({
     if (!result.success) {
       const error = result.error
 
-      toast.error(t(error.getTranslationKey()))
+      showModal({
+        level: 'error',
+        title: t('reset_password_error_modal_title'),
+        description: t(error.getTranslationKey()),
+      })
 
       if (error.isApiErrorType(AUTH_RESET_PASSWORD_SAME_PASSWORD)) {
         form.setError('password', { type: 'server', message: t(error.getTranslationKey()) })

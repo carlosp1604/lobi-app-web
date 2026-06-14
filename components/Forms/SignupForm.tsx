@@ -11,11 +11,11 @@ import { PasswordInputField } from '~/components/Forms/Input/PasswordInput'
 import { PasswordRegex, UserNameRegex, UsernameRegex } from '~/helpers/input.helper'
 import { Result } from '~/types/Result'
 import { AuthService } from '~/services/auth/AuthService'
-import { toast } from 'sonner'
 import { UserNameInput } from '~/components/Forms/Input/UserNameInput'
 import { UserUsernameInput } from '~/components/Forms/Input/UserUsernameInput'
 import { UserRole } from '~/types/users/UserRole'
 import { AppServiceError } from '~/types/AppServiceError'
+import { useInformationModal } from '~/hooks/useInformationModal'
 
 interface SignupFormProps {
   email: string
@@ -55,6 +55,8 @@ export const SignupForm = ({
     mode: 'onChange',
   })
 
+  const { showModal } = useInformationModal()
+
   const { isValid, errors } = form.formState
 
   const passwordValue = form.watch('password')
@@ -80,9 +82,18 @@ export const SignupForm = ({
       const error = result.error
 
       if (error.isStandard()) {
-        toast.error(t(error.getTranslationKey()))
+        showModal({
+          title: t('signup_error_modal_title'),
+          description: t(error.getTranslationKey()),
+          level: 'error',
+        })
       } else {
         if (error.hasConflictError('username')) {
+          showModal({
+            title: t('signup_error_modal_title'),
+            description: t(error.getTranslationKey()),
+            level: 'error',
+          })
           form.setError('username', { type: 'server', message: t('username_already_in_used_error_message') })
         }
       }

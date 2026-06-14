@@ -9,6 +9,7 @@ import { VerifyEmailForm } from '~/components/Forms/VerifyEmailForm'
 import { ResetPasswordForm } from '~/components/Forms/ResetPasswordForm'
 import { ValidateTokenForm } from '~/components/Forms/ValidateTokenForm'
 import { ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { InformationModalProvider } from '~/context/InformationModalProvider'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
 import {
   AUTH_RESET_PASSWORD_INVALID_TOKEN,
@@ -232,7 +233,10 @@ export function ResetPassword() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            { content }
+            <InformationModalProvider>
+              { content }
+            </InformationModalProvider>
+
           </CardContent>
           <CardFooter className="flex justify-end py-2 px-6 border-t bg-muted/30 rounded-b-lg">
             <span className="text-xs text-muted-foreground font-medium">

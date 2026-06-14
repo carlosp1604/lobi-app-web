@@ -48,5 +48,7 @@
   "cancel_activity_activity_not_found_message_title": "La actividad que intentas cancelar no existe. Serás redirigido a la página principal",
   "cancel_activity_only_host_can_cancel_message_title": "No puedes cancelar esta actividad porque no eres el propietario",
   "cancel_activity_activity_does_not_allow_cancel_message_title": "No puedes cancelar esta actividad porque su estado no lo permite",
-  "cancel_activity_activity_with_participants_cannot_be_cancelled_message_title": "No puedes cancelar esta actividad porque tiene participantes.\nUna actividad con participantes no puede ser cancelada. Prueba a abandonar la actividad, en su lugar"
+  "cancel_activity_activity_with_participants_cannot_be_cancelled_message_title": "No puedes cancelar esta actividad porque tiene participantes.\nUna actividad con participantes no puede ser cancelada. Prueba a abandonar la actividad, en su lugar",
+
+  "form_contains_errors_message_title": "El formulario tiene errores. Corrígelos e inténtalo de nuevo"
 }

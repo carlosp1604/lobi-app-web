@@ -36,9 +36,9 @@
   "user_profile_inactive_tab_title": "Trabajando...",
 
   "user_activities_filters_bar_search_button_title": "Buscar",
-  "user_activities_filters_bar_role_both_role_title": "Ambos",
+  "user_activities_filters_bar_role_both_role_title": "Cualquiera",
   "user_activities_filters_bar_role_host_role_title": "Organizador",
-  "user_activities_filters_bar_role_participant_role_title": "Participante",
+  "user_activities_filters_bar_role_participant_role_title": "Solo participante",
   "user_activities_filters_bar_role_dropdown_button_title": "Rol: {{type}}",
   "user_activities_filters_bar_sport_dropdown_any_sport_title": "Cualquier deporte",
   "user_activities_filters_bar_statuses_dropdown_button_title": "Cualquier estado",

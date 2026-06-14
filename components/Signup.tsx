@@ -12,6 +12,7 @@ import { VerifyEmailForm } from '~/components/Forms/VerifyEmailForm'
 import { ValidateTokenForm } from '~/components/Forms/ValidateTokenForm'
 import { useEffect, useState } from 'react'
 import { ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { InformationModalProvider } from '~/context/InformationModalProvider'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
 import {
   AUTH_CREATE_USER_INVALID_TOKEN,
@@ -232,7 +233,9 @@ export function Signup() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            { content }
+            <InformationModalProvider>
+              { content }
+            </InformationModalProvider>
           </CardContent>
           <CardFooter className="flex justify-end py-2 px-6 border-t bg-muted/30 rounded-b-lg">
             <span className="text-xs text-muted-foreground font-medium">

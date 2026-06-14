@@ -44,7 +44,7 @@ export const UserActivitiesFiltersBar = ({
 }: UserActivitiesFiltersBarProps) => {
   const { t } = useTranslation('user')
 
-  const currentRole = (filters.hostId && filters.participantId)
+  const currentRole = (!filters.hostId && !filters.participantId) || (filters.hostId && filters.participantId)
     ? 'both'
     : filters.hostId
       ? 'host'

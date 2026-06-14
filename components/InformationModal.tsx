@@ -66,7 +66,7 @@ export const InformationModal = ({
           <Button
             type="button"
             onClick={ onConfirm }
-            variant={ level === 'error' ? 'destructive' : 'default' }
+            variant={ 'default' }
           >
             { t('common:information_modal_confirm_button_title') }
           </Button>
