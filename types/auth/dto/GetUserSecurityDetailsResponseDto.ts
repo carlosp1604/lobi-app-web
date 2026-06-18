@@ -37,7 +37,7 @@ export const UserActiveSessionsSchema = z.object({
 })
 
 export const UserCredentialSchema = z.object({
-  lastModifiedAt: RelativeDateSchema,
+  lastModifiedAt: RelativeDateSchema.nullable(),
 })
 
 export const GetUserSecurityDetailsQueryResponseSchema = z.object({

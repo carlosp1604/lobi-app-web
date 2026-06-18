@@ -1,0 +1,27 @@
+{
+  "landing_page_title": "Organiza Y Busca Quedadas Deportivas",
+  "landing_page_description": "La plataforma para crear y apuntarte a actividades deportivas en tu zona. Encuentra partidos de grupo, conecta con gente para entrenar y descubre nuevos deportes cerca de ti",
+
+  "landing_title": "¿A qué jugamos hoy?",
+  "landing_description": "Encuentra actividades, partidos y encuentros cerca de ti. Únete a otros jugadores en segundos y no te quedes en el banquillo.",
+  "landing_search_placeholder": "Busca fútbol, pádel, running...",
+  "landing_create_section_title": "¿Prefieres tomar la iniciativa y poner las reglas?",
+  "landing_create_section_button_title": "+ Crear actividad",
+
+  "landing_how_it_works_title": "Únete a una actividad.\nEs muy fácil.",
+  "landing_step_1_title": "1. Elige tu ubicación",
+  "landing_step_1_description": "Busca en el mapa y descubre lo que se está cociendo por tu zona o en las instalaciones que te pillen mejor.",
+  "landing_step_2_title": "2. Escoge un deporte",
+  "landing_step_2_description": "Filtra por tus deportes favoritos. Fútbol, pádel, tenis... tú decides a qué quieres jugar hoy.",
+  "landing_step_3_title": "3. Elige el encuentro ideal",
+  "landing_step_3_description": "Revisa el nivel, el horario y los participantes. Si te encaja, apúntate en un clic y reserva tu plaza.",
+
+  "landing_mock_status_open": "Abierta",
+  "landing_mock_sport": "Fútbol 7",
+  "landing_mock_activity_title": "Pachanga Fútbol 7",
+  "landing_mock_activity_description": "Partido amistoso para sudar un poco. Nivel intermedio, buen rollo y tercer tiempo garantizado. ¡Apúntate!",
+  "landing_mock_participants": "8 / 14 participantes (min. 10)",
+  "landing_mock_team_config": "Equipos de 7",
+  "landing_mock_date": "Lunes 16 Junio, 19:30",
+  "landing_mock_organizer": "John Doe"
+}

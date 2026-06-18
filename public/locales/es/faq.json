@@ -1,4 +1,6 @@
 {
+  "faq_page_title": "Preguntas Frecuentes (FAQ)",
+  "faq_page_description": "Resuelve todas tus dudas sobre cómo crear partidos, unirte a quedadas y gestionar tu perfil en la plataforma {{appName}}.",
   "faq_h1_title": "Preguntas frecuentes",
   "faq_description": "Aquí encontrarás las respuesta a las preguntas más frecuentes sobre {{appName}}",
   "faq_whats_app_question_title": "¿Qué es {{appName}}?",

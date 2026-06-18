@@ -41,14 +41,14 @@ export const createCreateActivityFormSchema = (
         if (selectedDate < minDate) {
           ctx.addIssue({
             code: 'custom',
-            message: t('activity_date_x_message_title'),
+            message: t('activity_date_x_message_title', { minutes: MIN_MARGIN_MINUTES }),
           })
         }
 
         if (selectedDate > maxDate) {
           ctx.addIssue({
             code: 'custom',
-            message: t('activity_date_y_message_title'),
+            message: t('activity_date_y_message_title', { days: MAX_FUTURE_DAYS }),
           })
         }
       }),

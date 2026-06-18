@@ -22,4 +22,4 @@ export const ActivityTitleForbiddenRegex = new RegExp(/\p{Cc}/u)
 export const ActivityDescriptionRegex = new RegExp(`^[\\s\\S]{${MIN_ACTIVITY_DESCRIPTION_LENGTH},${MAX_ACTIVITY_DESCRIPTION_LENGTH}}$`)
 
 export const MIN_MARGIN_MINUTES = 90
-export const MAX_FUTURE_DAYS = 7
+export const MAX_FUTURE_DAYS = 30

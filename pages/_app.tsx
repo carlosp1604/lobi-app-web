@@ -4,8 +4,6 @@ import type { AppProps } from 'next/app'
 import { AuthProvider } from '~/context/AuthContext'
 import { PagesProgressProvider as ProgressProvider } from '@bprogress/next'
 
-
-
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ProgressProvider

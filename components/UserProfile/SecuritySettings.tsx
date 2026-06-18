@@ -125,14 +125,18 @@ export const SecuritySettings = ({ onSessionClosed }: SecurityTabProps) => {
               <span className="text-muted-foreground tracking-tight">
                 {
                   credential &&
-                  credential.lastModifiedAt.quantity === 0 &&
-                  credential.lastModifiedAt.unit === 'minutes' &&
-                  t('user_security_security_settings_password_never_modified_title') }
+                  credential.lastModifiedAt === null &&
+                  t('user_security_security_settings_password_never_modified_title')
+                }
                 {
                   credential &&
-                  !(credential.lastModifiedAt.quantity === 0 && credential.lastModifiedAt.unit === 'minutes') &&
-                  t('user_security_security_settings_password_last_modified_title',
-                    { time: getRelativeDateTitle(credential.lastModifiedAt) })
+                  credential.lastModifiedAt && (
+                    credential.lastModifiedAt.unit === 'minutes' && credential.lastModifiedAt.quantity === 0
+                      ? t('user_security_security_settings_password_now_modified_title')
+                      : t('user_security_security_settings_password_last_modified_title',
+                        { time: getRelativeDateTitle(credential.lastModifiedAt) })
+
+                  )
                 }
               </span>
             </div>

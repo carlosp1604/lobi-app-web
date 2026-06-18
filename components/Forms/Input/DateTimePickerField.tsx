@@ -12,6 +12,7 @@ import { Calendar as CalendarIcon } from 'lucide-react'
 import { format, setHours, setMinutes, isValid } from 'date-fns'
 import { Field, FieldError, FieldLabel } from '~/components/ui/field'
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover'
+import { MAX_FUTURE_DAYS } from '~/helpers/input.helper'
 
 interface DateTimePickerFieldProps {
   name: string
@@ -117,7 +118,7 @@ export const DateTimePickerField = ({ name, lang, control, label, buttonTitle }:
 
                     const maxDay = new Date(today)
 
-                    maxDay.setDate(today.getDate() + 7)
+                    maxDay.setDate(today.getDate() + MAX_FUTURE_DAYS)
 
                     return date < today || date > maxDay
                   } }

@@ -75,7 +75,7 @@ export const Roadmap = () => {
           { t('roadmap_h1_title') }
         </h1>
         <p className="text-gray-500 text-base md:text-lg mb-6 leading-relaxed">
-          { t('roadmap_description') }
+          { t('roadmap_description', { appName: t('common:app_name_title') }) }
         </p>
       </div>
 

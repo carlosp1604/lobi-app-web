@@ -17,6 +17,9 @@ const i18nConfig = {
       'api-errors',
       'next-errors'
     ],
+    '/': [
+      'landing'
+    ],
     'rgx:^/user': [
       'user',
       'activities'

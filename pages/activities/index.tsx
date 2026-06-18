@@ -1,3 +1,6 @@
+import useTranslation from 'next-translate/useTranslation'
+import { Seo } from '~/components/Seo'
+import { ActivitiesError } from '~/components/ActivitesError'
 import { ActivityService } from '~/services/activitity/ActivityService'
 import { SearchActivities } from '~/components/Activity/SearchActivities'
 import { GetServerSideProps } from 'next'
@@ -5,9 +8,6 @@ import { GetActivitiesResponseDto } from '~/types/activity/dto/GetActivitiesResp
 import { GetSportsQueryResponseDto } from '~/types/activity/dto/GetSportsQueryResponseDto'
 import { GetActivitiesAllowedParams } from '~/types/activity/GetActivitiesAllowedParams'
 import { GET_ACTIVITIES_INVALID_PARAMS } from '~/types/activity/ApiCodes'
-import { AlertCircle } from 'lucide-react'
-import { Button } from '~/components/ui/button'
-import Link from 'next/link'
 
 export interface ActivitiesPageProps {
   activitiesPage: GetActivitiesResponseDto | null
@@ -118,51 +118,48 @@ export const getServerSideProps = (async (context) => {
 }) satisfies GetServerSideProps<ActivitiesPageProps>
 
 export default function ActivitiesPage({ activitiesPage, sports, isError }: ActivitiesPageProps) {
+  const { t } = useTranslation('activities')
+
+  const canonical = `${process.env.NEXT_PUBLIC_APP_BASE_URL}/activities/`
+
   if (isError) {
     return (
-      <div
-        className="flex flex-col items-center justify-center py-20 px-4 text-center mt-6 mx-auto max-w-4xl">
-        <div className="bg-red-100 p-4 rounded-full mb-6">
-          <AlertCircle className="w-12 h-12 text-red-500"/>
-        </div>
+      <>
+        <Seo
+          title={ t('activities_error_page_title') }
+          description={ t('activities_error_page_description')  }
+          canonicalUrl={ canonical }
+          noIndex={ true }
+        />
 
-        <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-4 tracking-tight">
-          Vaya, algo no ha salido bien
-        </h1>
+        <ActivitiesError />
+      </>
 
-        <p className="text-gray-500 max-w-md mx-auto mb-8 text-base md:text-lg">
-          Hemos tenido un problema al intentar cargar los resultados. No te preocupes, puedes volver a intentarlo o
-          regresar al inicio.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
-          <Button
-            asChild
-            className="h-12 px-8 text-base font-bold bg-brand-primary hover:bg-brand-primary/80 text-white"
-          >
-            <Link href="/activities/">
-              Volver a buscar
-            </Link>
-          </Button>
-
-          <Button
-            asChild
-            variant="outline"
-            className="h-12 px-8 text-base font-bold text-gray-700 border-gray-300 hover:bg-gray-100"
-          >
-            <Link href="/">
-              Ir al inicio
-            </Link>
-          </Button>
-        </div>
-      </div>
     )
   }
 
+  const hasPage = activitiesPage !== null
+
   return (
-    <SearchActivities
-      activitiesPage={ activitiesPage }
-      sports={ sports }
-    />
+    <>
+      <Seo
+        title={ t('activities_search_page_title') }
+        description={ t('activities_search_page_description')  }
+        canonicalUrl={ canonical }
+        noIndex={ hasPage }
+        jsonLd={ {
+          '@context': 'https://schema.org',
+          '@type': 'SearchResultsPage',
+          'name': 'Buscador de actividades deportivas',
+          'url': `${process.env.NEXT_PUBLIC_APP_BASE_URL}/activities/`,
+          'description': t('activities_search_page_description'),
+        } }
+      />
+
+      <SearchActivities
+        activitiesPage={ activitiesPage }
+        sports={ sports }
+      />
+    </>
   )
 }

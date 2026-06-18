@@ -1,4 +1,6 @@
 {
+  "user_profile_page_title": "{{userName}} - Perfil deportivo",
+  "user_profile_page_description": "Perfil de usuario y actividades del deportista {{userName}}.",
   "user_profile_my_profile_badge_title": "Mi perfil",
   "user_profile_activities_tab_title": "Actividades",
   "user_profile_profile_setting_tab_title": "Perfil",
@@ -28,6 +30,7 @@
 
   "user_security_security_settings_title": "Configuración de Seguridad",
   "user_security_security_settings_password_title": "Contraseña",
+  "user_security_security_settings_password_now_modified_title": "Cambiada ahora",
   "user_security_security_settings_password_last_modified_title": "Cambiada hace {{time}}",
   "user_security_security_settings_password_never_modified_title": "Nunca cambiada",
   "user_security_security_settings_change_password_button_title": "Cambiar",

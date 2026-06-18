@@ -5,6 +5,7 @@ import { withSentryConfig } from '@sentry/nextjs'
 const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
+  trailingSlash: true,
 }
 
 const nextWithTranslations = nextTranslate(nextConfig, { turbopack: true })

@@ -7,7 +7,7 @@
   "magnitude_range_out_of_bounds_end_value_message_title": "Debe estar entre {{min}} y {{max}} {{unit}}",
   "magnitude_range_out_of_bounds_average_value_message_title": "Debe estar entre {{min}} y {{max}} {{unit}}",
   "magnitude_range_start_greater_than_end_message_title": "Debe ser mayor o igual que el valor inicial",
-  "magnitude_range_start_greater_than_end_message_title": "Debe ser menor o igual que el ritmo inicial",
+  "magnitude_range_start_less_than_end_message_title": "Debe ser menor o igual que el ritmo inicial",
   "magnitude_range_average_unnecessary_message_title": "No necesario cuando el valor inicial es igual al final",
   "magnitude_range_average_out_of_range_message_title": "Debe estar entre el valor inicial y el valor final",
   "magnitude_invalid_unit_message_title": "La unidad no es válida",
@@ -83,7 +83,6 @@
   "capability_speed_title": "Velocidad",
   "capability_speed_description": "Indica la velocidad media o esperada para tu actividad",
 
-
   "spec_individual_participants_title": "Participantes",
   "spec_team_participants_title": "Equipos",
 
@@ -101,6 +100,9 @@
   "geographic_point_summary_title": "{{lat}}, {{lng}}",
   "geographic_range_start_summary_title": "Inicio: {{lat}}, {{lng}}",
   "geographic_range_end_summary_title": "Final: {{lat}}, {{lng}}",
+
+  "create_activity_page_title": "Crear Nueva Quedada Deportiva",
+  "create_activity_page_description": "Organiza una nueva quedada deportiva. Toma el control de tu actividad, incluye toda la información de tu actividad y encuentra con quien jugar.",
 
   "create_activity_create_activity_title": "Crear nueva actividad",
   "create_activity_submit_button_title": "Crear actividad",
@@ -141,8 +143,8 @@
   "activity_title_invalid_characters_message_title": "Escribe el título en una sola línea continua",
   "activity_description_invalid_value_title": "Debe tener entre {{min}} y {{max}} caracteres",
   "activity_date_date_is_required_message_title": "La fecha y hora son obligatorias",
-  "activity_date_x_message_title": "La actividad debe programarse con al menos 1 hora de antelación",
-  "activity_date_y_message_title": "No puedes programar actividades a más de 7 días vista",
+  "activity_date_x_message_title": "La actividad debe programarse con al menos {{minutes}} minutos de antelación",
+  "activity_date_y_message_title": "No puedes programar actividades a más de {{days}} días vista",
 
   "individual_participants_min_players_invalid_range_message_title": "Debe estar entre {{min}} y {{max}}",
   "individual_participants_max_players_invalid_range_message_title": "Debe estar entre {{min}} y {{max}}",
@@ -193,6 +195,10 @@
 
   "create_activity_invalid_scheduled_date_message_title": "Debe estar entre dentro de {{minutes}} minutos y {{days}} días",
   "create_activity_form_contains_errors_message_title": "El formulario contiene errores. Corrígelos e inténtalo nuevamente",
+
+  "activity_details_page_description": "Detalles e información de esta quedada de {{sportName}}. Consulta la fecha, ubicación, participantes y el estado actual de la actividad",
+  "activity_details_page_jsonld_location_title": "Punto de encuentro",
+  "activity_details_page_jsonld_creator_unknown_title": "Desconocido",
 
   "activity_details_description_title": "Descripción",
   "activity_details_location_title": "Ubicación",
@@ -276,11 +282,22 @@
   "activities_search_bar_sorting_option_capacity_asc_title": "Menos plazas libres",
   "activities_search_bar_search_button_title": "Buscar actividades",
 
+  "activities_search_page_title": "Buscar Actividades y Encuentros Deportivos",
+  "activities_search_page_description": "Encuentra actividades deportivas, partidos y quedadas cerca de ti. Filtra por deporte, fecha o nivel y apúntate a los encuentros disponibles en tu zona.",
+  "activities_search_page_jsonld_name": "Buscador de actividades deportivas",
+
   "activities_search_h1_title": "Encuentra partidos y actividades deportivas cerca de ti",
   "activities_search_h2_title": "¿Con ganas de jugar? Únete a partidos de fútbol, pádel, running y más en tu ciudad. Selecciona tu ubicación en el mapa, filtra por tu nivel y encuentra al instante huecos libres para jugar hoy mismo.",
   "activities_search_activities_count_title": "{{count}} Actividades encontradas",
   "activities_search_empty_state_title": "No hemos encontrado actividades",
   "activities_search_empty_state_description": "Los filtros que has introducido no han dado ningún resultado.\nPrueba a ampliar el radio de búsqueda, cambia de deporte o reduce el número de plazas libres mínimas.",
+
+  "activities_error_page_title": "Error en la búsqueda de actividades",
+  "activities_error_page_description": "Ha ocurrido un error durante la búsqueda de actividades. No te preocupes, puedes volver a intentarlo o regresar al inicio.",
+  "activities_error_title": "Vaya, algo no ha salido bien",
+  "activities_error_description": "Hemos tenido un problema al intentar cargar los resultados. No te preocupes, puedes volver a intentarlo o regresar al inicio.",
+  "activities_error_search_button_title": "Volver a buscar",
+  "activities_error_home_button_title": "Ir al inicio",
 
   "activity_card_status_open_title": "Abierta",
   "activity_card_status_confirmed_title": "Confirmada",

@@ -1,3 +1,5 @@
+import useTranslation from 'next-translate/useTranslation'
+import { Seo } from '~/components/Seo'
 import { UserProfile } from '~/components/UserProfile/UserProfile'
 import { UserService } from '~/services/user/UserService'
 import { GetServerSideProps } from 'next'
@@ -51,9 +53,23 @@ export const getServerSideProps = (async (context) =>  {
 }) satisfies GetServerSideProps<ProfilePageProps>
 
 export default function ProfilePage({ user }: ProfilePageProps) {
+  const { t } = useTranslation('user')
+
   if (!user) {
     return null
   }
 
-  return <UserProfile userProfile={ user }/>
+  const canonical = `${process.env.NEXT_PUBLIC_APP_BASE_URL}/users/${user.username}/`
+
+  return (
+    <>
+      <Seo
+        title={ t('user_profile_page_title', { userName: user.name }) }
+        description={ t('user_profile_page_description', { userName: user.name }) }
+        canonicalUrl={ canonical }
+        noIndex={ true }
+      />
+      <UserProfile userProfile={ user }/>
+    </>
+  )
 }
